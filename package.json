@@ -1,0 +1,29 @@
+{
+  "name": "nirvana",
+  "version": "0.0.1",
+  "description": " A RESTful API for NodeJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/var-kar/nirvana.git"
+  },
+  "keywords": [
+    "nodejs",
+    "framework",
+    "restful",
+    "oauth2",
+    "api"
+  ],
+  "author": "Karthik Vasudevan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/var-kar/nirvana/issues"
+  },
+  "homepage": "https://github.com/var-kar/nirvana#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1"
+  }
+}
