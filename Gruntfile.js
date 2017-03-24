@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         reset: true
       },
       target: [
-        '*.js'
+        './Gruntfile.js',
+        './src/**/*.js'
       ]
     },
     //Mocha test runner check 'test' folder for all the specs.

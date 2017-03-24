@@ -1,7 +1,11 @@
 {
   "env": {
     "browser": false,
-    "node": true
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017
   },
   "rules": {
     // Rules are divided into sections from http://eslint.org/docs/rules/
