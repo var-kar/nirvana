@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "7"
+before_script:
+  - npm install grunt-cli -g
+script: grunt
+#notifications:
+  #slack: teamfirstapp:mIMH5c3vyIoYmwp94bdnCqA8
