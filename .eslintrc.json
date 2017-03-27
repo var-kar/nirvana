@@ -7,6 +7,10 @@
   "parserOptions": {
     "ecmaVersion": 2017
   },
+  "globals": {
+    "niType": true,
+    "NIHashMap": true
+  },
   "rules": {
     // Rules are divided into sections from http://eslint.org/docs/rules/
 
