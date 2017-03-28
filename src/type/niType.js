@@ -76,8 +76,9 @@ global.niType       = function type(suspect) {
     return getStringSubType(suspect);
   } else if (trueType === 'Number') {
     return getNumberSubType(suspect);
+  } else {
+    return trueType;
   }
-  return '';
 };
 
 /**
@@ -142,7 +143,7 @@ function isJsonString(str) {
  * [getStringSubType]
  * A private function to detect string subtype
  * @param suspect
- * @returns {*}
+ * @returns {String}
  */
 function getStringSubType(suspect) {
   if (emailPattern.test(suspect)) {
@@ -168,6 +169,12 @@ function getStringSubType(suspect) {
   }
 }
 
+/**
+ * [getNumberSubType]
+ * A private function to detect number subtype
+ * @param suspect
+ * @returns {String}
+ */
 function getNumberSubType(suspect) {
   if (Number.isNaN(suspect)) {
     return NINaN;
