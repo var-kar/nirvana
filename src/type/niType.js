@@ -132,7 +132,11 @@ function getTrueType(suspect) {
  */
 function isJsonString(str) {
   try {
-    JSON.parse(str);
+    let val = JSON.parse(str);
+    let valTrueType = niTrueType(val);
+    if (valTrueType === NINull || valTrueType === NINumber || valTrueType === NIBoolean) {
+      return false;
+    }
   } catch (e) {
     return false;
   }
