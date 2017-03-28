@@ -9,6 +9,8 @@
   },
   "globals": {
     "niType": true,
+    "niTrueType": true,
+    "niCustom": true,
     "NIHashMap": true,
     "NIString": true,
     "NIEmail": true,
@@ -25,7 +27,17 @@
     "NINaN": true,
     "NIFloat": true,
     "NIInt": true,
-    "NIInfinity": true
+    "NIInfinity": true,
+    "NIDate": true,
+    "NIFunction": true,
+    "NIHashMap": true,
+    "NIDictionary": true,
+    "NIObject": true,
+    "NIArray": true,
+    "NIUndefined": true,
+    "NINull": true,
+    "NIBoolean": true,
+    "NICustom": true
   },
   "rules": {
     // Rules are divided into sections from http://eslint.org/docs/rules/
