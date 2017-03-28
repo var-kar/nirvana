@@ -9,7 +9,23 @@
   },
   "globals": {
     "niType": true,
-    "NIHashMap": true
+    "NIHashMap": true,
+    "NIString": true,
+    "NIEmail": true,
+    "NIUrl": true,
+    "NIPhone": true,
+    "NIHexColor": true,
+    "NIRGBAColor": true,
+    "NIIPV4": true,
+    "NIIPV6": true,
+    "NICreditCard": true,
+    "NIJSON": true,
+    "NIEnum": true,
+    "NINumber": true,
+    "NINaN": true,
+    "NIFloat": true,
+    "NIInt": true,
+    "NIInfinity": true
   },
   "rules": {
     // Rules are divided into sections from http://eslint.org/docs/rules/

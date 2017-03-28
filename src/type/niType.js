@@ -4,6 +4,8 @@
  */
 'use strict';
 
+/*eslint "no-useless-escape": "off"*/
+/*eslint "max-len": "off"*/
 const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const urlPattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
@@ -34,6 +36,7 @@ global.NINumber     = 'Number';
 global.NIInt        = 'Int';
 global.NIFloat      = 'Float';
 global.NIInfinity   = 'Infinity';
+global.NINaN        = 'NaN';
 
 //date type
 global.NIDate       = 'Date';
@@ -56,7 +59,6 @@ global.NIEnum       = 'Enum';
 //all falsey types
 global.NINull       = 'Null';
 global.NIUndefined  = 'Undefined';
-global.NINaN        = 'NaN';
 
 //custom type
 global.NICustom     = 'Custom';
@@ -70,11 +72,10 @@ global.NICustom     = 'Custom';
  */
 global.niType       = function type(suspect) {
   var trueType = getTrueType(suspect);
-
   if (trueType === 'String') {
-    return getStringType(suspect);
+    return getStringSubType(suspect);
   } else if (trueType === 'Number') {
-
+    return getNumberSubType(suspect);
   }
   return '';
 };
@@ -100,7 +101,7 @@ global.niTrueType   = function type(suspect) {
 global.niCompare   = function compare(suspect, compareWith, enumArr = []) {
   if (compareWith === NIEnum) {
     //enum checker
-    return enumArr.indexOf(suspect) >= 0;
+    return (enumArr.indexOf(suspect) >= 0);
   } else if (compareWith instanceof RegExp) {
     //custom regex checker
     return compareWith.test(suspect);
@@ -122,6 +123,12 @@ function getTrueType(suspect) {
   return Object.prototype.toString.call(suspect).slice(8, -1);
 }
 
+/**
+ * [isJsonString]
+ * A private function which checks if the string is a valid JSON.
+ * @param str
+ * @returns {boolean}
+ */
 function isJsonString(str) {
   try {
     JSON.parse(str);
@@ -131,6 +138,46 @@ function isJsonString(str) {
   return true;
 }
 
-function getStringType(suspect) {
+/**
+ * [getStringSubType]
+ * A private function to detect string subtype
+ * @param suspect
+ * @returns {*}
+ */
+function getStringSubType(suspect) {
+  if (emailPattern.test(suspect)) {
+    return NIEmail;
+  } else if (urlPattern.test(suspect)) {
+    return NIUrl;
+  } else if (phonePattern.test(suspect)) {
+    return NIPhone;
+  } else if (hexColorPattern.test(suspect)) {
+    return NIHexColor;
+  } else if (rgbaColorPattern.test(suspect)) {
+    return NIRGBAColor;
+  } else if (ipv4Pattern.test(suspect)) {
+    return NIIPV4;
+  } else if (ipv6Pattern.test(suspect)) {
+    return NIIPV6;
+  } else if (creditCardPattern.test(suspect)) {
+    return NICreditCard;
+  } else if (isJsonString(suspect)) {
+    return NIJSON;
+  } else {
+    return NIString;
+  }
+}
 
+function getNumberSubType(suspect) {
+  if (Number.isNaN(suspect)) {
+    return NINaN;
+  } else if (suspect === Infinity || suspect === -Infinity) {
+    return NIInfinity;
+  } else if (suspect % 1 !== 0) {
+    return NIFloat;
+  } else if (suspect % 1 === 0) {
+    return NIInt;
+  } else {
+    return NINumber;
+  }
 }
