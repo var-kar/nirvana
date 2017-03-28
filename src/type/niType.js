@@ -3,7 +3,7 @@
  * License: MIT
  */
 'use strict';
-/*eslint no-control-regex: "error"*/
+
 const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const urlPattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
@@ -61,31 +61,6 @@ global.NINaN        = 'NaN';
 //custom type
 global.NICustom     = 'Custom';
 
-//private functions
-
-/**
- * [getTrueType]
- * A private function with returns suspect's true type.
- * @param suspect
- * @returns {String}
- */
-function getTrueType(suspect) {
-  return Object.prototype.toString.call(suspect).slice(8, -1);
-}
-
-function isJsonString(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
-function getStringType(suspect) {
-
-}
-
 //global functions
 
 /**
@@ -134,3 +109,28 @@ global.niCompare   = function compare(suspect, compareWith, enumArr = []) {
     return (niType(suspect) === compareWith);
   }
 };
+
+//private functions
+
+/**
+ * [getTrueType]
+ * A private function with returns suspect's true type.
+ * @param suspect
+ * @returns {String}
+ */
+function getTrueType(suspect) {
+  return Object.prototype.toString.call(suspect).slice(8, -1);
+}
+
+function isJsonString(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
+function getStringType(suspect) {
+
+}
