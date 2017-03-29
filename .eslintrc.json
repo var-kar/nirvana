@@ -11,7 +11,7 @@
   "globals": {
     "niType": true,
     "niTrueType": true,
-    "niCustom": true,
+    "niCompare": true,
     "NIHashMap": true,
     "NIString": true,
     "NIEmail": true,

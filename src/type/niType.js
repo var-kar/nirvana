@@ -8,7 +8,7 @@
 /*eslint "max-len": "off"*/
 const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const urlPattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+const urlPattern = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 const creditCardPattern = /[0-9]{13,19}|([0-9- ]{3,8}){3,6}/;
 const hexColorPattern = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 const rgbaColorPattern = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/;
@@ -108,7 +108,15 @@ global.niCompare   = function compare(suspect, compareWith, enumArr = []) {
     return compareWith.test(suspect);
   } else {
     //rest of it
-    return (niType(suspect) === compareWith);
+    if (niType(suspect) === compareWith) {
+      //check sub type
+      return true;
+    } else if (niTrueType(suspect) === compareWith) {
+      //if its not satisfied with sub type, check with parent type.
+      return true;
+    } else {
+      return false;
+    }
   }
 };
 

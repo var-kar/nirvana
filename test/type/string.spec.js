@@ -9,8 +9,38 @@ require('../../src/type/niType');
 
 //remember that true, Number, null etc are valid JSON according to JSON.parse
 //but this has been overridden in our validation.
-describe('NIType: ', function() {
-  describe('NIString: ', function() {
+describe('NITrueType', function() {
+  describe('NIString', function() {
+    it('should be a string', function() {
+      assert.equal(niTrueType('test@test.com'), NIString);
+      assert.equal(niTrueType('http://sdfsdf.com'), NIString);
+      assert.equal(niTrueType('+447595171911'), NIString);
+      assert.equal(niTrueType('undefined'), NIString);
+      assert.equal(niTrueType('null'), NIString);
+      assert.equal(niTrueType('infinity'), NIString);
+      assert.equal(niTrueType('-infinity'), NIString);
+      assert.equal(niTrueType('4242 4242 4242 4242'), NIString);
+    });
+    it('should not be a string', function() {
+      assert.notEqual(niTrueType(-'test@test.com'), NIString);
+      assert.notEqual(niTrueType(123), NIString);
+      assert.notEqual(niTrueType(123), NIString);
+      assert.notEqual(niTrueType(123.3423), NIString);
+      assert.notEqual(niTrueType(undefined), NIString);
+      assert.notEqual(niTrueType(null), NIString);
+      assert.notEqual(niTrueType(NaN), NIString);
+      assert.notEqual(niTrueType(false), NIString);
+      assert.notEqual(niTrueType(0), NIString);
+      assert.notEqual(niTrueType(0), NIString);
+      assert.notEqual(niTrueType({}), NIString);
+      assert.notEqual(niTrueType([]), NIString);
+      assert.notEqual(niTrueType(function() {}), NIString);
+      assert.notEqual(niTrueType(new Error('hello error world')), NIString);
+    });
+  });
+});
+describe('NIType ', function() {
+  describe('NIString ', function() {
 
     //string
     it('should be string for a string', function() {
@@ -41,7 +71,7 @@ describe('NIType: ', function() {
       assert.equal(niType('true'), NIString);
     });
   });
-  describe('NIJSON: ', function () {
+  describe('NIJSON ', function () {
     //json
     it('should be JSON for stringy empty array', function() {
       assert.equal(niType('[]'), NIJSON);
@@ -53,7 +83,7 @@ describe('NIType: ', function() {
       assert.equal(niType('{"foo": 1}'), NIJSON);
     });
   });
-  describe('NICreditCard: ', function () {
+  describe('NICreditCard ', function () {
     //credit card
     //visa
     it('should be credit card for stringy valid visa card number without space - 16 chars', function() {
@@ -196,6 +226,62 @@ describe('NIType: ', function() {
       assert.notEqual(niType('636-48018'), NIPhone);
       assert.notEqual(niType('191 541 754 3010'), NIPhone);
       assert.notEqual(niType('191 541 sdfssf'), NIPhone);
+      assert.notEqual(niType('111111'), NIPhone);
+      assert.notEqual(niType('#111111'), NIPhone);
+    });
+  });
+  describe('NIUrl', function() {
+    it('should be a valid URL', function() {
+      assert.equal(niType('http://google.com'), NIUrl);
+      assert.equal(niType('https://www.google.com'), NIUrl);
+      assert.equal(niType('www.google.com'), NIUrl);
+      assert.equal(niType('google.com'), NIUrl);
+      assert.equal(niType('google.com?query=test'), NIUrl);
+      assert.equal(niType('google.com/about/'), NIUrl);
+      assert.equal(niType('google.com#about'), NIUrl);
+    });
+    it('should be invalid URL', function() {
+      assert.notEqual(niType('google'), NIUrl);
+      assert.notEqual(niType('google.s'), NIUrl);
+      assert.notEqual(niType('google!.com'), NIUrl);
+      assert.notEqual(niType('sdfds@ggg.com'), NIUrl);
+    });
+  });
+  describe('NIEmail', function() {
+    it('should be a valid email', function() {
+      assert.equal(niType('test@test.com'), NIEmail);
+      assert.equal(niType('TestSpec.Mocha@Example.com'), NIEmail);
+      assert.equal(niType('g@g.co'), NIEmail);
+      assert.equal(niType('g_o@g.co'), NIEmail);
+    });
+    it('should be invalid email', function() {
+      assert.notEqual(niType('testtest.com'), NIEmail);
+      assert.notEqual(niType('test@test'), NIEmail);
+      assert.notEqual(niType('!@%.^^'), NIEmail);
+    });
+  });
+});
+
+describe('NICompare', function() {
+  describe('NIString', function() {
+    it('should be true for all strings', function() {
+      assert.isTrue(niCompare('sfdfsdf', NIString));
+      assert.isTrue(niCompare('sdfds@sdfsd.com', NIString));
+      assert.isTrue(niCompare('4242 4242 4242 4242', NIString));
+      assert.isTrue(niCompare('http://google.com', NIString));
+      assert.isTrue(niCompare('NaN', NIString));
+      assert.isTrue(niCompare('undefined', NIString));
+      assert.isTrue(niCompare('0', NIString));
+    });
+    it('should be false for all non strings', function() {
+      assert.isFalse(niCompare(0, NIString));
+      assert.isFalse(niCompare(-Infinity, NIString));
+      assert.isFalse(niCompare(undefined, NIString));
+      assert.isFalse(niCompare(null, NIString));
+      assert.isFalse(niCompare(false, NIString));
+      assert.isFalse(niCompare([], NIString));
+      assert.isFalse(niCompare({}, NIString));
+      assert.isFalse(niCompare(function() {}, NIString));
     });
   });
 });
