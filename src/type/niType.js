@@ -71,7 +71,7 @@ global.NICustom     = 'Custom';
  * @return {String}
  */
 global.niType       = function type(suspect) {
-  var trueType = getTrueType(suspect);
+  let trueType = getTrueType(suspect);
   if (trueType === 'String') {
     return getStringSubType(suspect);
   } else if (trueType === 'Number') {
