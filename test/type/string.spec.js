@@ -177,4 +177,25 @@ describe('NIType: ', function() {
       assert.notEqual(niType('#0000'), NIHexColor);
     });
   });
+  //phone
+  describe('NIPhone', function() {
+    it('should be a valid phone number', function() {
+      assert.equal(niType('+44 7595 171900'), NIPhone);
+      assert.equal(niType('07595171900'), NIPhone);
+      assert.equal(niType('7595171900'), NIPhone);
+      assert.equal(niType('919894227627'), NIPhone);
+      assert.equal(niType('919894227627'), NIPhone);
+      assert.equal(niType('02034174046'), NIPhone);
+      assert.equal(niType('020 341 74046'), NIPhone);
+      assert.equal(niType('044 43302065'), NIPhone);
+      assert.equal(niType('+91 44 43302065'), NIPhone);
+      assert.equal(niType('(541) 754-3010'), NIPhone);
+    });
+    it('should be invalid phone number', function() {
+      assert.notEqual(niType('754-3010'), NIPhone); //because no need for local phone number in internet
+      assert.notEqual(niType('636-48018'), NIPhone);
+      assert.notEqual(niType('191 541 754 3010'), NIPhone);
+      assert.notEqual(niType('191 541 sdfssf'), NIPhone);
+    });
+  });
 });

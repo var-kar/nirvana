@@ -154,7 +154,7 @@ function getStringSubType(suspect) {
     return NIEmail;
   } else if (urlPattern.test(suspect)) {
     return NIUrl;
-  } else if (phonePattern.test(suspect)) {
+  } else if (phonePattern.test(suspect.replace(/\s/g, ''))) {
     return NIPhone;
   } else if (hexColorPattern.test(suspect)) {
     return NIHexColor;
