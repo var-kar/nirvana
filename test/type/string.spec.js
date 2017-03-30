@@ -284,4 +284,22 @@ describe('NICompare', function() {
       assert.isFalse(niCompare(function() {}, NIString));
     });
   });
+  describe('NIJSON', function() {
+    it('should be a valid JSON and a string', function() {
+      assert.isTrue(niCompare('{}', NIJSON));
+      assert.isTrue(niCompare('[]', NIJSON));
+      assert.isTrue(niCompare('{"test": 4}', NIJSON));
+      assert.isTrue(niCompare('{"test": 4}', NIString));
+      assert.isTrue(niCompare('[]', NIString));
+    });
+    it('should be invalid JSON and a string', function() {
+      assert.isFalse(niCompare('undefined', NIJSON));
+      assert.isFalse(niCompare('null', NIJSON));
+      assert.isFalse(niCompare('0', NIJSON));
+      assert.isFalse(niCompare('234234', NIJSON));
+      assert.isFalse(niCompare('false', NIJSON));
+      assert.isFalse(niCompare('NaN', NIJSON));
+      assert.isFalse(niCompare(undefined, NIJSON));
+    });
+  });
 });
