@@ -34,5 +34,6 @@ module.exports = function(grunt) {
   //Register tasks
   grunt.registerTask('dev', ['eslint', 'mochaTest']);
   grunt.registerTask('default', ['eslint', 'mochaTest']);
-  grunt.registerTask('test', ['eslint', 'mochaTest']);
+  grunt.registerTask('lint', ['eslint']);
+  grunt.registerTask('test', ['mochaTest']);
 };
