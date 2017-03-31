@@ -83,7 +83,7 @@ describe('NIType ', function() {
       assert.equal(niType('{"foo": 1}'), NIJSON);
     });
   });
-  describe('NICreditCard ', function () {
+  describe('NICreditCard ', function() {
     //credit card
     //visa
     it('should be credit card for stringy valid visa card number without space - 16 chars', function() {
@@ -346,6 +346,108 @@ describe('NICompare', function() {
       assert.isTrue(niCompare('3530111333300000', NIString));
       assert.isTrue(niCompare('6331 1019 9999 0016', NIString));
       assert.isTrue(niCompare('6331101999990016', NIString));
+    });
+  });
+  describe('NIIPV6', function() {
+    it('should be a valid IPV6', function() {
+      assert.isTrue(niCompare('1200:0000:AB00:1234:0000:2552:7777:1313', NIIPV6));
+      assert.isTrue(niCompare('21DA:D3:0:2F3B:2AA:FF:FE28:9C5A', NIIPV6));
+    });
+    it('should be a valid string too', function() {
+      assert.isTrue(niCompare('1200:0000:AB00:1234:0000:2552:7777:1313', NIString));
+      assert.isTrue(niCompare('21DA:D3:0:2F3B:2AA:FF:FE28:9C5A', NIString));
+    });
+  });
+  describe('NIIPV4', function() {
+    it('should be a valid IPV4', function() {
+      assert.isTrue(niCompare('10.0.0.0', NIIPV4));
+      assert.isTrue(niCompare('172.16.0.0', NIIPV4));
+      assert.isTrue(niCompare('192.168.0.0', NIIPV4));
+    });
+    it('should be a valid string too', function() {
+      assert.isTrue(niCompare('10.0.0.0', NIString));
+      assert.isTrue(niCompare('172.16.0.0', NIString));
+      assert.isTrue(niCompare('192.168.0.0', NIString));
+    });
+  });
+  describe('NIRGBAColor', function() {
+    it('should be a valid RGBA color', function() {
+      assert.isTrue(niCompare('rgba(0,0,0,1)', NIRGBAColor));
+      assert.isTrue(niCompare('rgba(0,0,0)', NIRGBAColor));
+    });
+    it('should be a valid string', function() {
+      assert.isTrue(niCompare('rgba(0,0,0,1)', NIString));
+      assert.isTrue(niCompare('rgba(0,0,0)', NIString));
+    });
+  });
+  describe('NIHexColor', function() {
+    it('should be a valid hex color', function() {
+      assert.isTrue(niCompare('#000', NIHexColor));
+      assert.isTrue(niCompare('#ffffff', NIHexColor));
+    });
+    it('should be a valid string', function() {
+      assert.isTrue(niCompare('#ffffff', NIString));
+      assert.isTrue(niCompare('#000', NIString));
+    });
+  });
+  describe('NIPhone', function() {
+    it('should be a valid phone number', function() {
+      assert.isTrue(niCompare('+44 7595 171900', NIPhone));
+      assert.isTrue(niCompare('07595171900', NIPhone));
+      assert.isTrue(niCompare('7595171900', NIPhone));
+      assert.isTrue(niCompare('919894227627', NIPhone));
+      assert.isTrue(niCompare('919894227627', NIPhone));
+      assert.isTrue(niCompare('02034174046', NIPhone));
+      assert.isTrue(niCompare('020 341 74046', NIPhone));
+      assert.isTrue(niCompare('044 43302065', NIPhone));
+      assert.isTrue(niCompare('+91 44 43302065', NIPhone));
+      assert.isTrue(niCompare('(541) 754-3010', NIPhone));
+    });
+    it('should be a valid string', function() {
+      assert.isTrue(niCompare('+44 7595 171900', NIString));
+      assert.isTrue(niCompare('07595171900', NIString));
+      assert.isTrue(niCompare('7595171900', NIString));
+      assert.isTrue(niCompare('919894227627', NIString));
+      assert.isTrue(niCompare('919894227627', NIString));
+      assert.isTrue(niCompare('02034174046', NIString));
+      assert.isTrue(niCompare('020 341 74046', NIString));
+      assert.isTrue(niCompare('044 43302065', NIString));
+      assert.isTrue(niCompare('+91 44 43302065', NIString));
+      assert.isTrue(niCompare('(541) 754-3010', NIString));
+    });
+  });
+  describe('NIUrl', function() {
+    it('should be a valid URL', function() {
+      assert.isTrue(niCompare('http://google.com', NIUrl));
+      assert.isTrue(niCompare('https://www.google.com', NIUrl));
+      assert.isTrue(niCompare('www.google.com', NIUrl));
+      assert.isTrue(niCompare('google.com', NIUrl));
+      assert.isTrue(niCompare('google.com?query=test', NIUrl));
+      assert.isTrue(niCompare('google.com/about/', NIUrl));
+      assert.isTrue(niCompare('google.com#about', NIUrl));
+    });
+    it('should be a valid string', function() {
+      assert.isTrue(niCompare('http://google.com', NIString));
+      assert.isTrue(niCompare('https://www.google.com', NIString));
+      assert.isTrue(niCompare('www.google.com', NIString));
+      assert.isTrue(niCompare('google.com', NIString));
+      assert.isTrue(niCompare('google.com?query=test', NIString));
+      assert.isTrue(niCompare('google.com/about/', NIString));
+      assert.isTrue(niCompare('google.com#about', NIString));
+    });
+  });
+  describe('NIEmail', function() {
+    it('should be a valid email address', function() {
+      assert.isTrue(niCompare('test@test.com', NIEmail));
+      assert.isTrue(niCompare('TestSpec.Mocha@Example.com', NIEmail));
+      assert.isTrue(niCompare('g@g.co', NIEmail));
+      assert.isTrue(niCompare('g_o@g.co', NIEmail));
+    });
+    it('should be a valid string', function() {
+      assert.isTrue(niCompare('test@test.com', NIString));
+      assert.isTrue(niCompare('TestSpec.Mocha@Example.com', NIString));
+      assert.isTrue(niCompare('g@g.co', NIString));
+      assert.isTrue(niCompare('g_o@g.co', NIString));
     });
   });
 });
