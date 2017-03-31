@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         reset: true
       },
       target: [
-        '*.js'
+        './Gruntfile.js',
+        './src/**/*.js'
       ]
     },
     //Mocha test runner check 'test' folder for all the specs.
@@ -33,5 +34,6 @@ module.exports = function(grunt) {
   //Register tasks
   grunt.registerTask('dev', ['eslint', 'mochaTest']);
   grunt.registerTask('default', ['eslint', 'mochaTest']);
-  grunt.registerTask('test', ['eslint', 'mochaTest']);
+  grunt.registerTask('lint', ['eslint']);
+  grunt.registerTask('test', ['mochaTest']);
 };
