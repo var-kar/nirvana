@@ -24,6 +24,7 @@
     "NICreditCard": true,
     "NIJSON": true,
     "NIEnum": true,
+    "NIRegExp": true,
     "NINumber": true,
     "NINaN": true,
     "NIFloat": true,
