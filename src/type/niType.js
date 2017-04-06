@@ -6,20 +6,20 @@
 
 /*eslint "no-useless-escape": "off"*/
 /*eslint "max-len": "off"*/
-const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const urlPattern = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-const creditCardPattern = /[0-9]{13,19}|([0-9- ]{3,8}){3,6}/;
-const hexColorPattern = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
-const rgbaColorPattern = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/;
-const ipv4Pattern = /^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$/;
-const ipv6Pattern = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+const PHONE_PATTERN = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+const EMAIL_PATTERN = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const URL_PATTERN = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+const CREDIT_CARD_PATTERN = /[0-9]{13,19}|([0-9- ]{3,8}){3,6}/;
+const HEX_COLOR_PATTERN = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+const RGBA_COLOR_PATTERN = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/;
+const IPV4_PATTERN = /^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$/;
+const IPV6_PATTERN = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
 
 /**
  * Set all types in global scope which needs to
  * get validated in the schema.
  */
-//all string types
+//string and its sub types
 global.NIString     = 'String';
 global.NIEmail      = 'Email';
 global.NIUrl        = 'Url';
@@ -31,7 +31,7 @@ global.NIIPV6       = 'IPV6';
 global.NICreditCard = 'CreditCard';
 global.NIJSON       = 'JSON';
 
-//all number types
+//number & its sub types
 global.NINumber     = 'Number';
 global.NIInt        = 'Int';
 global.NIFloat      = 'Float';
@@ -55,6 +55,7 @@ global.NIFunction   = 'Function';
 
 //special type
 global.NIEnum       = 'Enum';
+global.NIRegExp     = 'RegExp';
 
 //all falsey types
 global.NINull       = 'Null';
@@ -96,16 +97,27 @@ global.niTrueType   = function type(suspect) {
  * Compares suspect with given type
  * @param suspect
  * @param compareWith
- * @param enumArr []
+ * @param thirdArg // this argument depends on compareWith value (Array for NIEnum, RegExp for NICustom)
  * @returns {boolean}
  */
-global.niCompare   = function compare(suspect, compareWith, enumArr = []) {
+global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
   if (compareWith === NIEnum) {
     //enum checker
-    return (enumArr.indexOf(suspect) >= 0);
-  } else if (compareWith instanceof RegExp) {
+    if (thirdArg === null) {
+      thirdArg = [];
+    }
+    if (niTrueType(thirdArg) === NIArray) {
+      return (thirdArg.indexOf(suspect) >= 0);
+    } else {
+      throw new TypeError('Expecting thridArg to be of type NIArray');
+    }
+  } else if (compareWith === NICustom) {
     //custom regex checker
-    return compareWith.test(suspect);
+    if (niTrueType(thirdArg) === NIRegExp) {
+      return thirdArg.test(suspect);
+    } else {
+      throw new TypeError('Expecting thirdArg to be of type NIRegExp');
+    }
   } else {
     //rest of it
     if (niType(suspect) === compareWith) {
@@ -131,7 +143,8 @@ global.niCompare   = function compare(suspect, compareWith, enumArr = []) {
 function getTrueType(suspect) {
   return Object.prototype.toString.call(suspect).slice(8, -1);
 }
-
+// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/logo/cancerresearchlogo.png
+// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/image/cancerresearchlogo.png
 /**
  * [isJsonString]
  * A private function which checks if the string is a valid JSON.
@@ -158,21 +171,21 @@ function isJsonString(str) {
  * @returns {String}
  */
 function getStringSubType(suspect) {
-  if (emailPattern.test(suspect)) {
+  if (EMAIL_PATTERN.test(suspect)) {
     return NIEmail;
-  } else if (urlPattern.test(suspect)) {
+  } else if (URL_PATTERN.test(suspect)) {
     return NIUrl;
-  } else if (phonePattern.test(suspect.replace(/\s/g, ''))) {
+  } else if (PHONE_PATTERN.test(suspect.replace(/\s/g, ''))) {
     return NIPhone;
-  } else if (hexColorPattern.test(suspect)) {
+  } else if (HEX_COLOR_PATTERN.test(suspect)) {
     return NIHexColor;
-  } else if (rgbaColorPattern.test(suspect)) {
+  } else if (RGBA_COLOR_PATTERN.test(suspect)) {
     return NIRGBAColor;
-  } else if (ipv4Pattern.test(suspect)) {
+  } else if (IPV4_PATTERN.test(suspect)) {
     return NIIPV4;
-  } else if (ipv6Pattern.test(suspect)) {
+  } else if (IPV6_PATTERN.test(suspect)) {
     return NIIPV6;
-  } else if (creditCardPattern.test(suspect)) {
+  } else if (CREDIT_CARD_PATTERN.test(suspect)) {
     return NICreditCard;
   } else if (isJsonString(suspect)) {
     return NIJSON;
@@ -190,11 +203,11 @@ function getStringSubType(suspect) {
 function getNumberSubType(suspect) {
   if (Number.isNaN(suspect)) {
     return NINaN;
-  } else if (suspect === Infinity || suspect === -Infinity) {
+  } else if (suspect === Number.POSITIVE_INFINITY || suspect === Number.NEGATIVE_INFINITY) {
     return NIInfinity;
   } else if (suspect % 1 !== 0) {
     return NIFloat;
-  } else if (suspect % 1 === 0) {
+  } else if (suspect % 1 === 0 && Number.isSafeInteger(suspect)) {
     return NIInt;
   } else {
     return NINumber;
