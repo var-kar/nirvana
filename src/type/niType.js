@@ -106,13 +106,17 @@ global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
     if (thirdArg === null) {
       thirdArg = [];
     }
-    return (thirdArg.indexOf(suspect) >= 0);
+    if (niTrueType(thirdArg) === NIArray) {
+      return (thirdArg.indexOf(suspect) >= 0);
+    } else {
+      throw new TypeError('Expecting thridArg to be of type NIArray');
+    }
   } else if (compareWith === NICustom) {
     //custom regex checker
-    if (thirdArg instanceof RegExp) {
+    if (niTrueType(thirdArg) === NIRegExp) {
       return thirdArg.test(suspect);
     } else {
-      throw new TypeError('Expecting thirdArg to be of type RegExp');
+      throw new TypeError('Expecting thirdArg to be of type NIRegExp');
     }
   } else {
     //rest of it
@@ -139,7 +143,8 @@ global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
 function getTrueType(suspect) {
   return Object.prototype.toString.call(suspect).slice(8, -1);
 }
-
+// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/logo/cancerresearchlogo.png
+// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/image/cancerresearchlogo.png
 /**
  * [isJsonString]
  * A private function which checks if the string is a valid JSON.

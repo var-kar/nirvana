@@ -98,4 +98,33 @@ describe('NICompare', () => {
     assert.isTrue(niCompare(Number.MIN_SAFE_INTEGER - 1, NINumber)); //not a safe int
     assert.isTrue(niCompare(Number.MAX_VALUE, NINumber)); //not a safe int
   });
+  it('should be an int', () => {
+    assert.isTrue(niCompare(+'1', NIInt));
+    assert.isTrue(niCompare(-0, NIInt));
+    assert.isTrue(niCompare(-0.0, NIInt));
+    assert.isTrue(niCompare(-1.0, NIInt));
+    assert.isTrue(niCompare(+new Date(), NIInt));
+    assert.isTrue(niCompare(-new Date(), NIInt));
+  });
+  it('should be a float', () => {
+    assert.isTrue(niCompare(Number.EPSILON, NIFloat));
+    assert.isTrue(niCompare(0.34234, NIFloat));
+    assert.isTrue(niCompare(-0.34234, NIFloat));
+    assert.isTrue(niCompare(parseFloat(1.1), NIFloat));
+    assert.isTrue(niCompare(parseFloat(-1.1), NIFloat));
+    assert.isTrue(niCompare(3453453453.34523423, NIFloat));
+    assert.isTrue(niCompare(3453453453.3452342323323424234234234234242342342342342342342342, NIFloat));
+    assert.isTrue(niCompare(Number.MIN_VALUE, NIFloat)); //not a safe int
+  });
+  it('should be a NaN', () => {
+    assert.isTrue(niCompare(NaN, NINaN));
+    assert.isTrue(niCompare(221 / 'sdfsdf', NINaN));
+    assert.isTrue(niCompare(44 / 'sdfsd', NINaN));
+  });
+  it('should be an Infinity', () => {
+    assert.isTrue(niCompare(Infinity, NIInfinity));
+    assert.isTrue(niCompare(-Infinity, NIInfinity));
+    assert.isTrue(niCompare(1 / 0, NIInfinity));
+    assert.isTrue(niCompare(-1 / 0, NIInfinity));
+  });
 });
