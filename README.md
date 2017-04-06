@@ -1,5 +1,5 @@
  # nirvana
- A RESTful API for NodeJS. 
+ A peaceful RESTful API framework for NodeJS. 
  ## Project Objective
  To provide type based JSON RESTful API which works with MySQL. 
  ### Why we need this framework?
