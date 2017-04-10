@@ -71,7 +71,7 @@ global.NICustom     = 'Custom';
  * @param suspect
  * @return {String}
  */
-global.niType       = function type(suspect) {
+global.niType       = (suspect) => {
   let trueType = getTrueType(suspect);
   if (trueType === 'String') {
     return getStringSubType(suspect);
@@ -88,7 +88,7 @@ global.niType       = function type(suspect) {
  * @param suspect
  * @returns {String}
  */
-global.niTrueType   = function type(suspect) {
+global.niTrueType   = (suspect) => {
   return getTrueType(suspect);
 };
 
@@ -100,7 +100,7 @@ global.niTrueType   = function type(suspect) {
  * @param thirdArg // this argument depends on compareWith value (Array for NIEnum, RegExp for NICustom)
  * @returns {boolean}
  */
-global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
+global.niCompare   = (suspect, compareWith, thirdArg = null) => {
   let typeError = 'Expecting thridArg to be of type';
   if (compareWith === NIEnum) {
     //enum checker
