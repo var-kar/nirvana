@@ -101,29 +101,30 @@ global.niTrueType   = function type(suspect) {
  * @returns {boolean}
  */
 global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
+  let typeError = 'Expecting thridArg to be of type';
   if (compareWith === NIEnum) {
     //enum checker
     if (thirdArg === null) {
       thirdArg = [];
     }
-    if (niTrueType(thirdArg) === NIArray) {
+    if (getTrueType(thirdArg) === NIArray) {
       return (thirdArg.indexOf(suspect) >= 0);
     } else {
-      throw new TypeError('Expecting thridArg to be of type NIArray');
+      throw new TypeError(typeError + ' NIArray');
     }
   } else if (compareWith === NICustom) {
     //custom regex checker
-    if (niTrueType(thirdArg) === NIRegExp) {
+    if (getTrueType(thirdArg) === NIRegExp) {
       return thirdArg.test(suspect);
     } else {
-      throw new TypeError('Expecting thirdArg to be of type NIRegExp');
+      throw new TypeError(typeError + ' NIRegExp');
     }
   } else {
     //rest of it
     if (niType(suspect) === compareWith) {
       //check sub type
       return true;
-    } else if (niTrueType(suspect) === compareWith) {
+    } else if (getTrueType(suspect) === compareWith) {
       //if its not satisfied with sub type, check with parent type.
       return true;
     } else {
@@ -143,8 +144,7 @@ global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
 function getTrueType(suspect) {
   return Object.prototype.toString.call(suspect).slice(8, -1);
 }
-// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/logo/cancerresearchlogo.png
-// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/image/cancerresearchlogo.png
+
 /**
  * [isJsonString]
  * A private function which checks if the string is a valid JSON.
