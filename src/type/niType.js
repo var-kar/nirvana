@@ -93,7 +93,7 @@ global.niTrueTypeOf = (suspect) => {
 };
 
 /**
- * [global extend]
+ * [extend]
  * Compares suspect with given type
  * @param thisArg suspect
  * @param expectedType
@@ -124,34 +124,26 @@ var extend = function(expectedType, secondArg = null) {
   }
 };
 
+/**
+ * [global niIsOfType]
+ * @param suspect
+ * @param expectedType
+ * @param secondArg
+ * @returns Boolean {*}
+ */
 global.niIsOfType   = (suspect, expectedType, secondArg) => {
   return extend.call(suspect, expectedType, secondArg);
 };
 
-if (!String.prototype.niIsOfType) {
-  String.prototype.niIsOfType = extend;
-}
-if (!Number.prototype.niIsOfType) {
-  Number.prototype.niIsOfType = extend;
-}
-if (!Array.prototype.niIsOfType) {
-  Array.prototype.niIsOfType = extend;
-}
-if (!Object.prototype.niIsOfType) {
-  Object.prototype.niIsOfType = extend;
-}
-if (!Boolean.prototype.niIsOfType) {
-  Boolean.prototype.niIsOfType = extend;
-}
-if (!Date.prototype.niIsOfType) {
-  Date.prototype.niIsOfType = extend;
-}
-if (!RegExp.prototype.niIsOfType) {
-  RegExp.prototype.niIsOfType = extend;
-}
-if (!Function.prototype.niIsOfType) {
-  Function.prototype.niIsOfType = extend;
-}
+//extend default types with niIsOfType
+if (!String.prototype.niIsOfType) String.prototype.niIsOfType     = extend;
+if (!Number.prototype.niIsOfType) Number.prototype.niIsOfType     = extend;
+if (!Array.prototype.niIsOfType) Array.prototype.niIsOfType       = extend;
+if (!Object.prototype.niIsOfType) Object.prototype.niIsOfType     = extend;
+if (!Boolean.prototype.niIsOfType) Boolean.prototype.niIsOfType   = extend;
+if (!Date.prototype.niIsOfType) Date.prototype.niIsOfType         = extend;
+if (!RegExp.prototype.niIsOfType) RegExp.prototype.niIsOfType     = extend;
+if (!Function.prototype.niIsOfType) Function.prototype.niIsOfType = extend;
 
 //private functions
 
