@@ -11,7 +11,7 @@
 
  ### How?
  - Creating a schema for all HTTP method which acts as blue print for all API calls.
- - Having a custom type support for validating.
+ - Having a custom type support for validation.
  - Providing couple of developer hackable methods for each schema, which runs pre and post process.
  - Providing OAuth 2.0 support, which takes care of user registration and authentication.
  - Automate API document creation and API key (Client) generation.

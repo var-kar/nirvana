@@ -53,9 +53,11 @@ global.NIHashMap    = global.NIDictionary = global.NIObject = 'Object';
 //function type
 global.NIFunction   = 'Function';
 
+//regex type
+global.NIRegExp     = 'RegExp';
+
 //special type
 global.NIEnum       = 'Enum';
-global.NIRegExp     = 'RegExp';
 
 //all falsey types
 global.NINull       = 'Null';
@@ -67,11 +69,11 @@ global.NICustom     = 'Custom';
 //global functions
 
 /**
- * [global niType]
+ * [global niTypeOf]
  * @param suspect
  * @return {String}
  */
-global.niType       = function type(suspect) {
+global.niTypeOf     = (suspect) => {
   let trueType = getTrueType(suspect);
   if (trueType === 'String') {
     return getStringSubType(suspect);
@@ -83,54 +85,67 @@ global.niType       = function type(suspect) {
 };
 
 /**
- * [global niTrueType]
+ * [global niTrueTypeOf]
  * Get the actual javascript type
  * @param suspect
  * @returns {String}
  */
-global.niTrueType   = function type(suspect) {
+global.niTrueTypeOf = (suspect) => {
   return getTrueType(suspect);
 };
 
 /**
- * [global niCompare]
+ * [extend]
  * Compares suspect with given type
- * @param suspect
- * @param compareWith
- * @param thirdArg // this argument depends on compareWith value (Array for NIEnum, RegExp for NICustom)
+ * @param thisArg suspect
+ * @param expectedType
+ * @param secondArg // this argument depends on expectedType value (Array for NIEnum, RegExp for NICustom)
  * @returns {boolean}
  */
-global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
-  if (compareWith === NIEnum) {
+var extend = function(expectedType, secondArg = null) {
+  let typeError = 'Expecting secondArg to be of type';
+  if (expectedType === NIEnum) {
     //enum checker
-    if (thirdArg === null) {
-      thirdArg = [];
+    if (secondArg === null) {
+      secondArg = [];
     }
-    if (niTrueType(thirdArg) === NIArray) {
-      return (thirdArg.indexOf(suspect) >= 0);
-    } else {
-      throw new TypeError('Expecting thridArg to be of type NIArray');
-    }
-  } else if (compareWith === NICustom) {
+    if (getTrueType(secondArg) === NIArray) {
+      return (secondArg.indexOf(this) >= 0);
+    } else throw new TypeError(typeError + ' NIArray');
+  } else if (expectedType === NICustom) {
     //custom regex checker
-    if (niTrueType(thirdArg) === NIRegExp) {
-      return thirdArg.test(suspect);
-    } else {
-      throw new TypeError('Expecting thirdArg to be of type NIRegExp');
-    }
+    if (getTrueType(secondArg) === NIRegExp) {
+      return secondArg.test(this);
+    } else throw new TypeError(typeError + ' NIRegExp');
   } else {
     //rest of it
-    if (niType(suspect) === compareWith) {
+    if (niTypeOf(this) === expectedType) {
       //check sub type
       return true;
-    } else if (niTrueType(suspect) === compareWith) {
-      //if its not satisfied with sub type, check with parent type.
-      return true;
-    } else {
-      return false;
-    }
+    } else return getTrueType(this) === expectedType;
   }
 };
+
+/**
+ * [global niIsOfType]
+ * @param suspect
+ * @param expectedType
+ * @param secondArg
+ * @returns Boolean {*}
+ */
+global.niIsOfType   = (suspect, expectedType, secondArg) => {
+  return extend.call(suspect, expectedType, secondArg);
+};
+
+//extend default types with niIsOfType
+if (!String.prototype.niIsOfType) String.prototype.niIsOfType     = extend;
+if (!Number.prototype.niIsOfType) Number.prototype.niIsOfType     = extend;
+if (!Array.prototype.niIsOfType) Array.prototype.niIsOfType       = extend;
+if (!Object.prototype.niIsOfType) Object.prototype.niIsOfType     = extend;
+if (!Boolean.prototype.niIsOfType) Boolean.prototype.niIsOfType   = extend;
+if (!Date.prototype.niIsOfType) Date.prototype.niIsOfType         = extend;
+if (!RegExp.prototype.niIsOfType) RegExp.prototype.niIsOfType     = extend;
+if (!Function.prototype.niIsOfType) Function.prototype.niIsOfType = extend;
 
 //private functions
 
@@ -143,8 +158,7 @@ global.niCompare   = function compare(suspect, compareWith, thirdArg = null) {
 function getTrueType(suspect) {
   return Object.prototype.toString.call(suspect).slice(8, -1);
 }
-// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/logo/cancerresearchlogo.png
-// https://s3-eu-west-1.amazonaws.com/assets.melontwits.com/organisation/image/cancerresearchlogo.png
+
 /**
  * [isJsonString]
  * A private function which checks if the string is a valid JSON.
@@ -154,7 +168,7 @@ function getTrueType(suspect) {
 function isJsonString(str) {
   try {
     let val = JSON.parse(str);
-    let valTrueType = niTrueType(val);
+    let valTrueType = getTrueType(val);
     if (valTrueType === NINull || valTrueType === NINumber || valTrueType === NIBoolean) {
       return false;
     }
@@ -189,9 +203,7 @@ function getStringSubType(suspect) {
     return NICreditCard;
   } else if (isJsonString(suspect)) {
     return NIJSON;
-  } else {
-    return NIString;
-  }
+  } else return NIString;
 }
 
 /**
@@ -209,7 +221,5 @@ function getNumberSubType(suspect) {
     return NIFloat;
   } else if (suspect % 1 === 0 && Number.isSafeInteger(suspect)) {
     return NIInt;
-  } else {
-    return NINumber;
-  }
+  } else return NINumber;
 }
