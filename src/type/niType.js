@@ -53,9 +53,11 @@ global.NIHashMap    = global.NIDictionary = global.NIObject = 'Object';
 //function type
 global.NIFunction   = 'Function';
 
+//regex type
+global.NIRegExp     = 'RegExp';
+
 //special type
 global.NIEnum       = 'Enum';
-global.NIRegExp     = 'RegExp';
 
 //all falsey types
 global.NINull       = 'Null';

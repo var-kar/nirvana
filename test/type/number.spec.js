@@ -128,3 +128,42 @@ describe('NIIsOfType', () => {
     assert.isTrue(niIsOfType(-1 / 0, NIInfinity));
   });
 });
+describe('Native Extend', () => {
+  it('should be a number', () => {
+    assert.isTrue((343453453453452352324323423422343453453434524).niIsOfType(NINumber)); //not a safe int
+    assert.isTrue(343453453453452352324323423422343453453434524.234234.niIsOfType(NINumber)); //not a safe int
+    assert.isTrue((Number.MAX_SAFE_INTEGER + 1).niIsOfType(NINumber)); //not a safe int
+    assert.isTrue((Number.MIN_SAFE_INTEGER - 1).niIsOfType(NINumber)); //not a safe int
+    assert.isTrue(Number.MAX_VALUE.niIsOfType(NINumber)); //not a safe int
+    assert.isTrue(NaN.niIsOfType(NINumber)); //not a safe int
+  });
+  it('should be an int', () => {
+    assert.isTrue((+'1').niIsOfType(NIInt));
+    assert.isTrue((-0).niIsOfType(NIInt));
+    assert.isTrue((-0.0).niIsOfType(NIInt));
+    assert.isTrue((-1.0).niIsOfType(NIInt));
+    assert.isTrue((+new Date()).niIsOfType(NIInt));
+    assert.isTrue((-new Date()).niIsOfType(NIInt));
+  });
+  it('should be a float', () => {
+    assert.isTrue(Number.EPSILON.niIsOfType(NIFloat));
+    assert.isTrue(0.34234.niIsOfType(NIFloat));
+    assert.isTrue((-0.34234).niIsOfType(NIFloat));
+    assert.isTrue(parseFloat(1.1).niIsOfType(NIFloat));
+    assert.isTrue(parseFloat(-1.1).niIsOfType(NIFloat));
+    assert.isTrue(3453453453.34523423.niIsOfType(NIFloat));
+    assert.isTrue(3453453453.3452342323323424234234234234242342342342342342342342.niIsOfType(NIFloat));
+    assert.isTrue(Number.MIN_VALUE.niIsOfType(NIFloat)); //not a safe int
+  });
+  it('should be a NaN', () => {
+    assert.isTrue(NaN.niIsOfType(NINaN));
+    assert.isTrue((221 / 'sdfsdf').niIsOfType(NINaN));
+    assert.isTrue((44 / 'sdfsd').niIsOfType(NINaN));
+  });
+  it('should be an Infinity', () => {
+    assert.isTrue(Infinity.niIsOfType(NIInfinity));
+    assert.isTrue((-Infinity).niIsOfType(NIInfinity));
+    assert.isTrue((1 / 0).niIsOfType(NIInfinity));
+    assert.isTrue((-1 / 0).niIsOfType(NIInfinity));
+  });
+});

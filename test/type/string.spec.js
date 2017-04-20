@@ -451,3 +451,191 @@ describe('NIIsOfType', () => {
     });
   });
 });
+
+//you can't check undefined or null
+describe('Native Extend', () => {
+  describe('NIString', () => {
+    it('should be true for all strings', () => {
+      assert.isTrue('sfdfsdf'.niIsOfType(NIString));
+      assert.isTrue('sdfds@sdfsd.com'.niIsOfType(NIString));
+      assert.isTrue('4242 4242 4242 4242'.niIsOfType(NIString));
+      assert.isTrue('http://google.com'.niIsOfType(NIString));
+      assert.isTrue('NaN'.niIsOfType(NIString));
+      assert.isTrue('undefined'.niIsOfType(NIString));
+      assert.isTrue('0'.niIsOfType(NIString));
+    });
+    it('should be false for all non strings', () => {
+      assert.isFalse((0).niIsOfType(NIString));
+      assert.isFalse((-Infinity).niIsOfType(NIString));
+      assert.isFalse(false.niIsOfType(NIString));
+      assert.isFalse([].niIsOfType(NIString));
+      assert.isFalse({}.niIsOfType(NIString));
+      assert.isFalse((() => {}).niIsOfType(NIString));
+    });
+  });
+  describe('NIJSON', () => {
+    it('should be a valid JSON and a string', () => {
+      assert.isTrue('{}'.niIsOfType(NIJSON));
+      assert.isTrue('[]'.niIsOfType(NIJSON));
+      assert.isTrue('{"test": 4}'.niIsOfType(NIJSON));
+      assert.isTrue('{"test": 4}'.niIsOfType(NIString));
+      assert.isTrue('[]'.niIsOfType(NIString));
+    });
+    it('should be invalid JSON and a string', () => {
+      assert.isFalse('undefined'.niIsOfType(NIJSON));
+      assert.isFalse('null'.niIsOfType(NIJSON));
+      assert.isFalse('0'.niIsOfType(NIJSON));
+      assert.isFalse('234234'.niIsOfType(NIJSON));
+      assert.isFalse('false'.niIsOfType(NIJSON));
+      assert.isFalse('NaN'.niIsOfType(NIJSON));
+    });
+  });
+  describe('NICreditCard', () => {
+    it('should be true for all valid credit cards', () => {
+      assert.isTrue('4242424242424242'.niIsOfType(NICreditCard));
+      assert.isTrue('4242 4242 4242 4242'.niIsOfType(NICreditCard));
+      assert.isTrue('4012 8888 8888 1881 1'.niIsOfType(NICreditCard));
+      assert.isTrue('40128888888818811'.niIsOfType(NICreditCard));
+      assert.isTrue('4222 2222 2222 2'.niIsOfType(NICreditCard));
+      assert.isTrue('4222222222222'.niIsOfType(NICreditCard));
+      assert.isTrue('5555555555554444'.niIsOfType(NICreditCard));
+      assert.isTrue('5555 5555 5555 4444'.niIsOfType(NICreditCard));
+      assert.isTrue('3782 8224 6310 005'.niIsOfType(NICreditCard));
+      assert.isTrue('378282246310005'.niIsOfType(NICreditCard));
+      assert.isTrue('5610 5910 8101 8250'.niIsOfType(NICreditCard));
+      assert.isTrue('5610591081018250'.niIsOfType(NICreditCard));
+      assert.isTrue('3056 9309 0259 04'.niIsOfType(NICreditCard));
+      assert.isTrue('30569309025904'.niIsOfType(NICreditCard));
+      assert.isTrue('6011 1111 1111 1117'.niIsOfType(NICreditCard));
+      assert.isTrue('6011111111111117'.niIsOfType(NICreditCard));
+      assert.isTrue('3530 1113 3330 0000'.niIsOfType(NICreditCard));
+      assert.isTrue('3530111333300000'.niIsOfType(NICreditCard));
+      assert.isTrue('6331 1019 9999 0016'.niIsOfType(NICreditCard));
+      assert.isTrue('6331101999990016'.niIsOfType(NICreditCard));
+    });
+    it('should be true for all valid string', () => {
+      assert.isTrue('4242424242424242'.niIsOfType(NIString));
+      assert.isTrue('4242 4242 4242 4242'.niIsOfType(NIString));
+      assert.isTrue('4012 8888 8888 1881 1'.niIsOfType(NIString));
+      assert.isTrue('40128888888818811'.niIsOfType(NIString));
+      assert.isTrue('4222 2222 2222 2'.niIsOfType(NIString));
+      assert.isTrue('4222222222222'.niIsOfType(NIString));
+      assert.isTrue('5555555555554444'.niIsOfType(NIString));
+      assert.isTrue('5555 5555 5555 4444'.niIsOfType(NIString));
+      assert.isTrue('3782 8224 6310 005'.niIsOfType(NIString));
+      assert.isTrue('378282246310005'.niIsOfType(NIString));
+      assert.isTrue('5610 5910 8101 8250'.niIsOfType(NIString));
+      assert.isTrue('5610591081018250'.niIsOfType(NIString));
+      assert.isTrue('3056 9309 0259 04'.niIsOfType(NIString));
+      assert.isTrue('30569309025904'.niIsOfType(NIString));
+      assert.isTrue('6011 1111 1111 1117'.niIsOfType(NIString));
+      assert.isTrue('6011111111111117'.niIsOfType(NIString));
+      assert.isTrue('3530 1113 3330 0000'.niIsOfType(NIString));
+      assert.isTrue('3530111333300000'.niIsOfType(NIString));
+      assert.isTrue('6331 1019 9999 0016'.niIsOfType(NIString));
+      assert.isTrue('6331101999990016'.niIsOfType(NIString));
+    });
+  });
+  describe('NIIPV6', () => {
+    it('should be a valid IPV6', () => {
+      assert.isTrue('1200:0000:AB00:1234:0000:2552:7777:1313'.niIsOfType(NIIPV6));
+      assert.isTrue('21DA:D3:0:2F3B:2AA:FF:FE28:9C5A'.niIsOfType(NIIPV6));
+    });
+    it('should be a valid string too', () => {
+      assert.isTrue('1200:0000:AB00:1234:0000:2552:7777:1313'.niIsOfType(NIString));
+      assert.isTrue('21DA:D3:0:2F3B:2AA:FF:FE28:9C5A'.niIsOfType(NIString));
+    });
+  });
+  describe('NIIPV4', () => {
+    it('should be a valid IPV4', () => {
+      assert.isTrue('10.0.0.0'.niIsOfType(NIIPV4));
+      assert.isTrue('172.16.0.0'.niIsOfType(NIIPV4));
+      assert.isTrue('192.168.0.0'.niIsOfType(NIIPV4));
+    });
+    it('should be a valid string too', () => {
+      assert.isTrue('10.0.0.0'.niIsOfType(NIString));
+      assert.isTrue('172.16.0.0'.niIsOfType(NIString));
+      assert.isTrue('192.168.0.0'.niIsOfType(NIString));
+    });
+  });
+  describe('NIRGBAColor', () => {
+    it('should be a valid RGBA color', () => {
+      assert.isTrue('rgba(0,0,0,1)'.niIsOfType(NIRGBAColor));
+      assert.isTrue('rgba(0,0,0)'.niIsOfType(NIRGBAColor));
+    });
+    it('should be a valid string', () => {
+      assert.isTrue('rgba(0,0,0,1)'.niIsOfType(NIString));
+      assert.isTrue('rgba(0,0,0)'.niIsOfType(NIString));
+    });
+  });
+  describe('NIHexColor', () => {
+    it('should be a valid hex color', () => {
+      assert.isTrue('#000'.niIsOfType(NIHexColor));
+      assert.isTrue('#ffffff'.niIsOfType(NIHexColor));
+    });
+    it('should be a valid string', () => {
+      assert.isTrue('#ffffff'.niIsOfType(NIString));
+      assert.isTrue('#000'.niIsOfType(NIString));
+    });
+  });
+  describe('NIPhone', () => {
+    it('should be a valid phone number', () => {
+      assert.isTrue('+44 7595 171900'.niIsOfType(NIPhone));
+      assert.isTrue('07595171900'.niIsOfType(NIPhone));
+      assert.isTrue('7595171900'.niIsOfType(NIPhone));
+      assert.isTrue('919894227627'.niIsOfType(NIPhone));
+      assert.isTrue('919894227627'.niIsOfType(NIPhone));
+      assert.isTrue('02034174046'.niIsOfType(NIPhone));
+      assert.isTrue('020 341 74046'.niIsOfType(NIPhone));
+      assert.isTrue('044 43302065'.niIsOfType(NIPhone));
+      assert.isTrue('+91 44 43302065'.niIsOfType(NIPhone));
+      assert.isTrue('(541) 754-3010'.niIsOfType(NIPhone));
+    });
+    it('should be a valid string', () => {
+      assert.isTrue('+44 7595 171900'.niIsOfType(NIString));
+      assert.isTrue('07595171900'.niIsOfType(NIString));
+      assert.isTrue('7595171900'.niIsOfType(NIString));
+      assert.isTrue('919894227627'.niIsOfType(NIString));
+      assert.isTrue('919894227627'.niIsOfType(NIString));
+      assert.isTrue('02034174046'.niIsOfType(NIString));
+      assert.isTrue('020 341 74046'.niIsOfType(NIString));
+      assert.isTrue('044 43302065'.niIsOfType(NIString));
+      assert.isTrue('+91 44 43302065'.niIsOfType(NIString));
+      assert.isTrue('(541) 754-3010'.niIsOfType(NIString));
+    });
+  });
+  describe('NIUrl', () => {
+    it('should be a valid URL', () => {
+      assert.isTrue('http://google.com'.niIsOfType(NIUrl));
+      assert.isTrue('https://www.google.com'.niIsOfType(NIUrl));
+      assert.isTrue('www.google.com'.niIsOfType(NIUrl));
+      assert.isTrue('google.com'.niIsOfType(NIUrl));
+      assert.isTrue('google.com?query=test'.niIsOfType(NIUrl));
+      assert.isTrue('google.com/about/'.niIsOfType(NIUrl));
+      assert.isTrue('google.com#about'.niIsOfType(NIUrl));
+    });
+    it('should be a valid string', () => {
+      assert.isTrue('http://google.com'.niIsOfType(NIString));
+      assert.isTrue('https://www.google.com'.niIsOfType(NIString));
+      assert.isTrue('www.google.com'.niIsOfType(NIString));
+      assert.isTrue('google.com'.niIsOfType(NIString));
+      assert.isTrue('google.com?query=test'.niIsOfType(NIString));
+      assert.isTrue('google.com/about/'.niIsOfType(NIString));
+      assert.isTrue('google.com#about'.niIsOfType(NIString));
+    });
+  });
+  describe('NIEmail', () => {
+    it('should be a valid email address', () => {
+      assert.isTrue('test@test.com'.niIsOfType(NIEmail));
+      assert.isTrue('TestSpec.Mocha@Example.com'.niIsOfType(NIEmail));
+      assert.isTrue('g@g.co'.niIsOfType(NIEmail));
+      assert.isTrue('g_o@g.co'.niIsOfType(NIEmail));
+    });
+    it('should be a valid string', () => {
+      assert.isTrue('test@test.com'.niIsOfType(NIString));
+      assert.isTrue('TestSpec.Mocha@Example.com'.niIsOfType(NIString));
+      assert.isTrue('g@g.co'.niIsOfType(NIString));
+      assert.isTrue('g_o@g.co'.niIsOfType(NIString));
+    });
+  });
+});
