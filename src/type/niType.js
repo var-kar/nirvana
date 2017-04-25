@@ -31,6 +31,9 @@ global.NIIPV6       = 'IPV6';
 global.NICreditCard = 'CreditCard';
 global.NIJSON       = 'JSON';
 
+//special type
+global.NIEnum       = 'Enum';
+
 //number & its sub types
 global.NINumber     = 'Number';
 global.NIInt        = 'Int';
@@ -55,9 +58,6 @@ global.NIFunction   = 'Function';
 
 //regex type
 global.NIRegExp     = 'RegExp';
-
-//special type
-global.NIEnum       = 'Enum';
 
 //all falsey types
 global.NINull       = 'Null';
