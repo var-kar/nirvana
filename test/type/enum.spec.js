@@ -4,7 +4,7 @@
  */
 'use strict';
 const assert = require('chai').assert;
-require('../../src/type/niType');
+require('../../src/utils/niType');
 //enums doesn't have type or trueType checker
 //enums can only be validated using niCompareWith
 describe('NIIsOfType', () => {

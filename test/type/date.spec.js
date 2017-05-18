@@ -4,7 +4,7 @@
  */
 'use strict';
 const assert = require('chai').assert;
-require('../../src/type/niType');
+require('../../src/utils/niType');
 
 describe('NITypeOf', () => {
   describe('NIDate', () => {
