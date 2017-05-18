@@ -104,13 +104,12 @@ global.niTrueTypeOf = (suspect) => {
  */
 var extend = function(expectedType, secondArg = null) {
   let typeError = 'Expecting secondArg to be of type';
+  let arrayEmpty = 'NIEnum validation array is empty';
   if (expectedType === NIEnum) {
-    //enum checker
-    if (secondArg === null) {
-      secondArg = [];
-    }
     if (getTrueType(secondArg) === NIArray) {
-      return (secondArg.indexOf(this) >= 0);
+      if (secondArg.length > 0) {
+        return (secondArg.indexOf(this) >= 0);
+      } else throw new RangeError(arrayEmpty);
     } else throw new TypeError(typeError + ' NIArray');
   } else if (expectedType === NICustom) {
     //custom regex checker

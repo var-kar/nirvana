@@ -76,5 +76,14 @@ describe('Native Extend', () => {
       assert.isTrue(new Date(null).niIsOfType(NIDate));
       assert.isTrue(new Date('2017-01-10T00:00:00').niIsOfType(NIDate));
     });
+    it('should not be a date', () => {
+      assert.isFalse('sdfsdf'.niIsOfType(NIDate));
+      assert.isFalse((1).niIsOfType(NIDate));
+      assert.isFalse((23423423424234).niIsOfType(NIDate));
+      assert.isFalse({}.niIsOfType(NIDate));
+      assert.isFalse([].niIsOfType(NIDate));
+      assert.isFalse((function(){}).niIsOfType(NIDate));
+      assert.isFalse(true.niIsOfType(NIDate));
+    });
   });
 });
