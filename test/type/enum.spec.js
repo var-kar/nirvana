@@ -25,7 +25,6 @@ describe('NIIsOfType', () => {
     });
     it('should throw an error if the secondArg is not or type NIArray', () => {
       var typeErrorMsg = 'Expecting secondArg to be of type NIArray';
-      let arrayEmpty = 'NIEnum validation array is empty';
       assert.throws(function() {
         return niIsOfType('sdfws', NIEnum, 1);
       }, TypeError, typeErrorMsg);
@@ -47,6 +46,9 @@ describe('NIIsOfType', () => {
       assert.throws(function() {
         return niIsOfType('sdfws', NIEnum, {});
       }, TypeError, typeErrorMsg);
+    });
+    it('should throw an error if the secondArg is NIArray and is empty', () => {
+      let arrayEmpty = 'NIEnum validation array is empty';
       assert.throws(function() {
         return niIsOfType('sdfws', NIEnum, []);
       }, RangeError, arrayEmpty);
