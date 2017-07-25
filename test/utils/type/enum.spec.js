@@ -4,7 +4,10 @@
  */
 'use strict';
 const assert = require('chai').assert;
-require('../../src/utils/niType');
+require('../../../src/utils/niType');
+require('../../../src/utils/niFor');
+const sampleDate = require('../../fixtures/date.fix');
+const errorMsg = require('../../../src/error');
 //enums doesn't have type or trueType checker
 //enums can only be validated using niCompareWith
 describe('NIIsOfType', () => {
@@ -23,8 +26,8 @@ describe('NIIsOfType', () => {
       assert.isFalse(niIsOfType(NaN, NIEnum, testEnumArray));
       assert.isFalse(niIsOfType('sss', NIEnum, testEnumArray));
     });
-    it('should throw an error if the secondArg is not or type NIArray', () => {
-      var typeErrorMsg = 'Expecting secondArg to be of type NIArray';
+    it('should throw an error if the secondArg is not of type NIArray', () => {
+      var typeErrorMsg = `${errorMsg.NIType.secondArgType} ${NIArray}`;
       assert.throws(function() {
         return niIsOfType('sdfws', NIEnum, 1);
       }, TypeError, typeErrorMsg);
@@ -48,7 +51,7 @@ describe('NIIsOfType', () => {
       }, TypeError, typeErrorMsg);
     });
     it('should throw an error if the secondArg is NIArray and is empty', () => {
-      let arrayEmpty = 'NIEnum validation array is empty';
+      let arrayEmpty = errorMsg.NIType.secondArgEmpty;
       assert.throws(function() {
         return niIsOfType('sdfws', NIEnum, []);
       }, RangeError, arrayEmpty);

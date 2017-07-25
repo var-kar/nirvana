@@ -3,7 +3,7 @@
  * License: MIT
  */
 'use strict';
-
+const errorMsg = require('../error');
 /*eslint "no-useless-escape": "off"*/
 /*eslint "max-len": "off"*/
 const PHONE_PATTERN = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
@@ -103,19 +103,17 @@ global.niTrueTypeOf = (suspect) => {
  * @returns {boolean}
  */
 var extend = function(expectedType, secondArg = null) {
-  let typeError = 'Expecting secondArg to be of type';
-  let arrayEmpty = 'NIEnum validation array is empty';
   if (expectedType === NIEnum) {
     if (getTrueType(secondArg) === NIArray) {
       if (secondArg.length > 0) {
         return (secondArg.indexOf(this) >= 0);
-      } else throw new RangeError(arrayEmpty);
-    } else throw new TypeError(typeError + ' NIArray');
+      } else throw new RangeError(errorMsg.NIType.secondArgEmpty);
+    } else throw new TypeError(`${errorMsg.NIType.secondArgType} ${NIArray}`);
   } else if (expectedType === NICustom) {
     //custom regex checker
     if (getTrueType(secondArg) === NIRegExp) {
       return secondArg.test(this);
-    } else throw new TypeError(typeError + ' NIRegExp');
+    } else throw new TypeError(`${errorMsg.NIType.secondArgType} ${NIRegExp}`);
   } else {
     //rest of it
     if (niTypeOf(this) === expectedType) {

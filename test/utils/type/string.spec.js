@@ -5,7 +5,7 @@
 
 'use strict';
 const assert = require('chai').assert;
-require('../../src/utils/niType');
+require('../../../src/utils/niType');
 
 //remember that true, Number, null etc are valid JSON according to JSON.parse
 //but this has been overridden in our validation.
