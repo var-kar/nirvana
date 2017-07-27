@@ -1,18 +1,18 @@
 'use strict';
-const assert = require('chai').assert;
 require('../../../src/utils/niType');
-require('../../../src/utils/niFor');
-const sampleArray = require('../../fixtures/array.fix');
+require('../../../src/utils/niLoop');
+const sampleArray = require('../../fixtures/type/array.fix');
+const assert = require('chai').assert;
 
 describe('NITypeOf', () => {
   describe('NIArray', () => {
     it('Should be an array', function() {
-      sampleArray.valid.niFor(function(value) {
+      sampleArray.valid.niLoop(function(value) {
         assert.equal(niTypeOf(value), NIArray);
       });
     });
     it('Should not be an array', function() {
-      sampleArray.invalid.niFor(function(value) {
+      sampleArray.invalid.niLoop(function(value) {
         assert.notEqual(niTypeOf(value), NIArray);
       });
     });
@@ -21,12 +21,12 @@ describe('NITypeOf', () => {
 describe('NITrueTypeOf', () => {
   describe('NIArray', () => {
     it('Should be an array', function() {
-      sampleArray.valid.niFor(function(value) {
+      sampleArray.valid.niLoop(function(value) {
         assert.equal(niTrueTypeOf(value), NIArray);
       });
     });
     it('Should not be an array', function() {
-      sampleArray.invalid.niFor(function(value) {
+      sampleArray.invalid.niLoop(function(value) {
         assert.notEqual(niTrueTypeOf(value), NIArray);
       });
     });
@@ -35,12 +35,12 @@ describe('NITrueTypeOf', () => {
 describe('Native Extend', () => {
   describe('NIArray', () => {
     it('Should be an array', function() {
-      sampleArray.valid.niFor(function(value) {
+      sampleArray.valid.niLoop(function(value) {
         assert.isTrue((value).niIsOfType(NIArray));
       });
     });
     it('Should not be an array', function() {
-      sampleArray.nativeInvalid.niFor(function(value) {
+      sampleArray.nativeInvalid.niLoop(function(value) {
         assert.isFalse((value).niIsOfType(NIArray));
       });
     });

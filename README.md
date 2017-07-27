@@ -1,4 +1,4 @@
- # nirvana
+ # nirvana [![Build Status](https://travis-ci.org/var-kar/nirvana.svg?branch=master)](https://travis-ci.org/var-kar/nirvana)
  A peaceful RESTful API framework for NodeJS. 
  ## Project Objective
  To provide type based JSON RESTful API which works with MySQL. 

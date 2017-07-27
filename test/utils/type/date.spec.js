@@ -3,20 +3,20 @@
  * License: MIT
  */
 'use strict';
-const assert = require('chai').assert;
 require('../../../src/utils/niType');
-require('../../../src/utils/niFor');
-const sampleDate = require('../../fixtures/date.fix');
+require('../../../src/utils/niLoop');
+const sampleDate = require('../../fixtures/type/date.fix');
+const assert = require('chai').assert;
 
 describe('NITypeOf', () => {
   describe('NIDate', () => {
     it('should be a date', () => {
-      sampleDate.valid.niFor(function(value) {
+      sampleDate.valid.niLoop(function(value) {
         assert.equal(niTypeOf(value), NIDate);
       });
     });
     it('should not be a date', () => {
-      sampleDate.invalid.niFor(function(value) {
+      sampleDate.invalid.niLoop(function(value) {
         assert.notEqual(niTypeOf(value), NIDate);
       });
     });
@@ -25,12 +25,12 @@ describe('NITypeOf', () => {
 describe('NITrueTypeOf', () => {
   describe('NIDate', () => {
     it('should be a date', () => {
-      sampleDate.valid.niFor(function(value) {
+      sampleDate.valid.niLoop(function(value) {
         assert.equal(niTrueTypeOf(value), NIDate);
       });
     });
     it('should not be a date', () => {
-      sampleDate.invalid.niFor(function(value) {
+      sampleDate.invalid.niLoop(function(value) {
         assert.notEqual(niTrueTypeOf(value), NIDate);
       });
     });
@@ -39,12 +39,12 @@ describe('NITrueTypeOf', () => {
 describe('NIIsOfType', () => {
   describe('NIDate', () => {
     it('should be a date', () => {
-      sampleDate.valid.niFor(function(value) {
+      sampleDate.valid.niLoop(function(value) {
         assert.isTrue(niIsOfType(value, NIDate));
       });
     });
     it('should not be a date', () => {
-      sampleDate.invalid.niFor(function(value) {
+      sampleDate.invalid.niLoop(function(value) {
         assert.isFalse(niIsOfType(value, NIDate));
       });
     });
@@ -53,12 +53,12 @@ describe('NIIsOfType', () => {
 describe('Native Extend', () => {
   describe('NIDate', () => {
     it('should be a date', () => {
-      sampleDate.valid.niFor(function(value) {
+      sampleDate.valid.niLoop(function(value) {
         assert.isTrue(value.niIsOfType(NIDate));
       });
     });
     it('should not be a date', () => {
-      sampleDate.nativeInvalid.niFor(function(value) {
+      sampleDate.nativeInvalid.niLoop(function(value) {
         assert.isFalse(value.niIsOfType(NIDate));
       });
     });

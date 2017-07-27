@@ -3,20 +3,20 @@
  * License: MIT
  */
 'use strict';
-const assert = require('chai').assert;
 require('../../../src/utils/niType');
-require('../../../src/utils/niFor');
-const sampleBoolean = require('../../fixtures/boolean.fix');
+require('../../../src/utils/niLoop');
+const sampleBoolean = require('../../fixtures/type/boolean.fix');
+const assert = require('chai').assert;
 
 describe('NITypeOf', () => {
   describe('NIBoolean', () => {
     it('Should be a boolean', function() {
-      sampleBoolean.valid.niFor(function(value) {
+      sampleBoolean.valid.niLoop(function(value) {
         assert.equal(niTypeOf(value), NIBoolean);
       });
     });
     it('Should not be a boolean', function() {
-      sampleBoolean.invalid.niFor(function(value) {
+      sampleBoolean.invalid.niLoop(function(value) {
         assert.notEqual(niTypeOf(value), NIBoolean);
       });
     });
@@ -25,12 +25,12 @@ describe('NITypeOf', () => {
 describe('NITrueTypeOf', () => {
   describe('NIBoolean', () => {
     it('Should be a boolean', function() {
-      sampleBoolean.valid.niFor(function(value) {
+      sampleBoolean.valid.niLoop(function(value) {
         assert.equal(niTrueTypeOf(value), NIBoolean);
       });
     });
     it('Should not be a boolean', function() {
-      sampleBoolean.invalid.niFor(function(value) {
+      sampleBoolean.invalid.niLoop(function(value) {
         assert.notEqual(niTrueTypeOf(value), NIBoolean);
       });
     });
@@ -39,12 +39,12 @@ describe('NITrueTypeOf', () => {
 describe('Native Extend', () => {
   describe('NIBoolean', () => {
     it('Should be a boolean', function() {
-      sampleBoolean.valid.niFor(function(value) {
+      sampleBoolean.valid.niLoop(function(value) {
         assert.isTrue((value).niIsOfType(NIBoolean));
       });
     });
     it('Should not be a boolean', function() {
-      sampleBoolean.nativeInvalid.niFor(function(value) {
+      sampleBoolean.nativeInvalid.niLoop(function(value) {
         assert.isFalse((value).niIsOfType(NIBoolean));
       });
     });
