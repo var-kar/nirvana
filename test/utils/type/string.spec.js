@@ -41,7 +41,6 @@ describe('NITrueTypeOf', () => {
 });
 describe('NITypeOf ', () => {
   describe('NIString ', () => {
-
     //string
     it('should be string for a string', () => {
       assert.equal(niTypeOf('Hello world!'), NIString);
