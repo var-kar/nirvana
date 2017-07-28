@@ -1,7 +1,7 @@
 'use strict';
 require('../../../src/utils/niType');
 require('../../../src/utils/niLoop');
-const sampleRegEx = require('../../fixtures/type/regex.fix');
+const sampleRegEx = require('../../fixtures/utils/type/regex.fix');
 const assert = require('chai').assert;
 
 describe('NITypeOf', () => {

@@ -6,7 +6,7 @@
 'use strict';
 require('../../../src/utils/niType');
 require('../../../src/utils/niLoop');
-const sampleNumber = require('../../fixtures/type/number.fix');
+const sampleNumber = require('../../fixtures/utils/type/number.fix');
 const assert = require('chai').assert;
 
 describe('NITrueTypeOf', () => {

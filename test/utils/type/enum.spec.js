@@ -5,7 +5,7 @@
 'use strict';
 require('../../../src/utils/niType');
 require('../../../src/utils/niLoop');
-const sampleEnum = require('../../fixtures/type/enum.fix');
+const sampleEnum = require('../../fixtures/utils/type/enum.fix');
 const errorMsg = require('../../../src/error');
 const assert = require('chai').assert;
 //enums doesn't have type or trueType checker
