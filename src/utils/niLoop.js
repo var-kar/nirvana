@@ -9,15 +9,20 @@ const errorMsg = require('../error');
  * @return undefined //uses callback to return
  */
 var niLoop = function(cb) {
-  if (niTypeOf(this) === NIArray || niTypeOf(this) === NIHashMap) {
-    if (niTypeOf(cb) === NIFunction) {
+  if (niTypeOf(cb) === NIFunction) {
+    if (niTypeOf(this) === NIArray || niTypeOf(this) === NIHashMap) {
       for (let itemKey in this) {
         if (this.hasOwnProperty(itemKey)) {
           cb(this[itemKey], itemKey);
         }
       }
-    } else throw new TypeError(`${errorMsg.NILoop.cbTypeError}`);
-  } else throw new TypeError(`${errorMsg.NILoop.itemTypeError}`);
+    } else {
+      cb();
+      throw new TypeError(`${errorMsg.NILoop.itemTypeError}`);
+    }
+  } else {
+    throw new TypeError(`${errorMsg.NILoop.cbTypeError}`);
+  }
   return;
 };
 
