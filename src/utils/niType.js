@@ -134,6 +134,8 @@ global.niIsOfType   = (suspect, expectedType, secondArg) => {
   return extend.call(suspect, expectedType, secondArg);
 };
 
+//niIsOfType(1, NINumber);
+
 //extend default types with niIsOfType
 if (!String.prototype.niIsOfType) String.prototype.niIsOfType     = extend;
 if (!Number.prototype.niIsOfType) Number.prototype.niIsOfType     = extend;

@@ -10,7 +10,7 @@ const errorMsg = require('../error');
  */
 var niLoop = function(cb) {
   if (niTypeOf(cb) === NIFunction) {
-    if (niTypeOf(this) === NIArray || niTypeOf(this) === NIHashMap) {
+    if (niIsOfType(this, NIArray) || niIsOfType(this, NIHashMap)) {
       for (let itemKey in this) {
         if (this.hasOwnProperty(itemKey)) {
           cb(this[itemKey], itemKey);
