@@ -15,11 +15,10 @@ class NIQueryBuilder {
 
   select(fields) {
     if (niIsOfType(fields, NIArray)) {
-      this._query = `SELECT \`${fields.join(',')}\` `;
+      this._query = `SELECT ${this._formatField(fields)} `;
     } else {
       this._query = 'SELECT * ';
     }
-
     return this;
   }
 
@@ -35,6 +34,11 @@ class NIQueryBuilder {
 
   leftJoin(param) {
     this._query += this._tableDeclaration('LEFT JOIN', param);
+    return this;
+  }
+
+  rightJoin(param) {
+    this._query += this._tableDeclaration('RIGHT JOIN', param);
     return this;
   }
 
@@ -73,6 +77,10 @@ class NIQueryBuilder {
   into(tableName) {
     this._query += `INTO ${tableName} `;
     return this;
+  }
+
+  values(obj) {
+
   }
 
   update() {
@@ -114,10 +122,9 @@ class NIQueryBuilder {
   _parseCondition(item, operator) {
     let fieldName = Object.keys(item)[0];
     let condition = Object.keys(item[fieldName])[0];
-    let noTilt = item[fieldName].noFieldTilt;
     let conditionOperator = (niOperator[condition]) ? niOperator[condition] : condition;
     let value = this._conditionOperatorException(item[fieldName][condition], conditionOperator);
-    fieldName = (noTilt) ? fieldName : `\`${fieldName}\``;
+    fieldName = this._formatField(fieldName);
     return `(${fieldName} ${conditionOperator} ${value}) ${operator} `;
   }
 
@@ -148,10 +155,38 @@ class NIQueryBuilder {
         }
         break;
       default: // null should not be checked here so all nulls will be wrapped as string
-        value = (value.indexOf('(') >= 0 && value.indexOf(')') <= 0) ? value : `'${value}'`;
+        value = this._checkForFunctions(value);
         break;
     }
     return value;
+  }
+
+  _formatField(field) {
+    let fieldStr = '';
+    let _this = this;
+    if (niIsOfType(field, NIArray)) {
+      field.niLoop(function(item) {
+        if (niIsOfType(item, NIString)) {
+          fieldStr += `${_this._checkForFunctions(item, '`')}, `;
+        }
+      });
+      fieldStr = fieldStr.substring(0, fieldStr.length - 2);
+    } else if (niIsOfType(field, NIString)) {
+      fieldStr += `${_this._checkForFunctions(field, '`')}`;
+    } else {
+      throw new TypeError('Expecting array or string for fields');
+    }
+    return fieldStr;
+  }
+
+  _checkForFunctions(value, wrapping = '"') {
+    if (value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
+      return value;
+    } else if (niIsOfType(value, NINull)) {
+      return 'NULL';
+    } else {
+      return `${wrapping}${value}${wrapping}`;
+    }
   }
 
   _tableDeclaration(keyword, param) {
@@ -164,3 +199,6 @@ class NIQueryBuilder {
     return query;
   }
 }
+
+let queryBuilder = new NIQueryBuilder().select(['name', 'COUNT(id) AS `test`']).from('Merchant').getQuery();
+console.log(queryBuilder);
