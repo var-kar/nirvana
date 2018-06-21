@@ -5,7 +5,7 @@
 
 'use strict';
 const assert = require('chai').assert;
-require('../../src/type/niType');
+require('../../../src/utils/niType');
 
 //remember that true, Number, null etc are valid JSON according to JSON.parse
 //but this has been overridden in our validation.
@@ -41,7 +41,6 @@ describe('NITrueTypeOf', () => {
 });
 describe('NITypeOf ', () => {
   describe('NIString ', () => {
-
     //string
     it('should be string for a string', () => {
       assert.equal(niTypeOf('Hello world!'), NIString);

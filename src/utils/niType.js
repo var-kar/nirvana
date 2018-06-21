@@ -3,7 +3,7 @@
  * License: MIT
  */
 'use strict';
-
+const errorMsg = require('../error');
 /*eslint "no-useless-escape": "off"*/
 /*eslint "max-len": "off"*/
 const PHONE_PATTERN = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
@@ -31,6 +31,9 @@ global.NIIPV6       = 'IPV6';
 global.NICreditCard = 'CreditCard';
 global.NIJSON       = 'JSON';
 
+//special type
+global.NIEnum       = 'Enum';
+
 //number & its sub types
 global.NINumber     = 'Number';
 global.NIInt        = 'Int';
@@ -55,9 +58,6 @@ global.NIFunction   = 'Function';
 
 //regex type
 global.NIRegExp     = 'RegExp';
-
-//special type
-global.NIEnum       = 'Enum';
 
 //all falsey types
 global.NINull       = 'Null';
@@ -103,20 +103,17 @@ global.niTrueTypeOf = (suspect) => {
  * @returns {boolean}
  */
 var extend = function(expectedType, secondArg = null) {
-  let typeError = 'Expecting secondArg to be of type';
   if (expectedType === NIEnum) {
-    //enum checker
-    if (secondArg === null) {
-      secondArg = [];
-    }
     if (getTrueType(secondArg) === NIArray) {
-      return (secondArg.indexOf(this) >= 0);
-    } else throw new TypeError(typeError + ' NIArray');
+      if (secondArg.length > 0) {
+        return (secondArg.indexOf(this) >= 0);
+      } else throw new RangeError(errorMsg.NIType.secondArgEmpty);
+    } else throw new TypeError(`${errorMsg.NIType.secondArgType} ${NIArray}`);
   } else if (expectedType === NICustom) {
     //custom regex checker
     if (getTrueType(secondArg) === NIRegExp) {
       return secondArg.test(this);
-    } else throw new TypeError(typeError + ' NIRegExp');
+    } else throw new TypeError(`${errorMsg.NIType.secondArgType} ${NIRegExp}`);
   } else {
     //rest of it
     if (niTypeOf(this) === expectedType) {
@@ -136,6 +133,8 @@ var extend = function(expectedType, secondArg = null) {
 global.niIsOfType   = (suspect, expectedType, secondArg) => {
   return extend.call(suspect, expectedType, secondArg);
 };
+
+//niIsOfType(1, NINumber);
 
 //extend default types with niIsOfType
 if (!String.prototype.niIsOfType) String.prototype.niIsOfType     = extend;
