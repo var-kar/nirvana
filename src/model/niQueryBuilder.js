@@ -57,6 +57,37 @@ class NIQueryBuilder {
     return this;
   }
 
+  groupBy(fields) {
+    if (niIsOfType(fields, NIArray)) {
+      this._query = `GROUP BY ${this._formatField(fields)} `;
+    } else {
+      throw new TypeError('Group by expects array as input');
+    }
+    return this;
+  }
+
+  orderBy(fields) {
+    if (niIsOfType(fields, NIArray)) {
+      this._query = `ORDER BY ${this._formatField(fields)} `;
+    } else {
+      throw new TypeError('Order by expects array as input');
+    }
+    return this;
+  }
+
+  having(condition) {
+    this._query += `HAVING ${this._condition(condition)} `;
+    return this;
+  }
+
+  limit(limit, offset) {
+    this._query += `LIMIT ${limit}`;
+    if (offset) {
+      this._query += `, ${offset} `;
+    }
+    return this;
+  }
+
   union() {
     let queryString = '';
     [...arguments].forEach(function(item) {
@@ -155,33 +186,35 @@ class NIQueryBuilder {
         }
         break;
       default: // null should not be checked here so all nulls will be wrapped as string
-        value = this._checkForFunctions(value);
+        value = this._checkForFunctions(value, '\'');
         break;
     }
     return value;
   }
 
   _formatField(field) {
-    let fieldStr = '';
-    let _this = this;
+    let fieldStr = '', _this = this;
     if (niIsOfType(field, NIArray)) {
       field.niLoop(function(item) {
         if (niIsOfType(item, NIString)) {
-          fieldStr += `${_this._checkForFunctions(item, '`')}, `;
+          fieldStr += `${_this._checkForFunctions(item)}, `;
         }
       });
       fieldStr = fieldStr.substring(0, fieldStr.length - 2);
     } else if (niIsOfType(field, NIString)) {
-      fieldStr += `${_this._checkForFunctions(field, '`')}`;
+      fieldStr += `${_this._checkForFunctions(field)}`;
     } else {
       throw new TypeError('Expecting array or string for fields');
     }
     return fieldStr;
   }
 
-  _checkForFunctions(value, wrapping = '"') {
+  _checkForFunctions(value, wrapping = '`') {
     if (value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
       return value;
+    } else if (value.indexOf('.') >= 0 && wrapping === '`') {
+      let valSplit = value.split('.');
+      return `\`${valSplit[0]}\`.\`${valSplit[1]}\``;
     } else if (niIsOfType(value, NINull)) {
       return 'NULL';
     } else {
@@ -200,5 +233,18 @@ class NIQueryBuilder {
   }
 }
 
-let queryBuilder = new NIQueryBuilder().select(['name', 'COUNT(id) AS `test`']).from('Merchant').getQuery();
+let queryBuilder = new NIQueryBuilder()
+  .select(['M.name', 'M.id', 'M._deleteDate', 'S._deleteDate'])
+  .from('Merchant')
+  .alias('M')
+  .innerJoin('Store')
+  .alias('S')
+  .on([{'S.__merchantId': {$eq: 'M.id'}}])
+  .where([
+    {'S._deleteDate': {$isNot: null}},
+    {'M._deleteDate': {$isNot: null}},
+    {'M.name': {$like: 'GREATEST(\'test\')'}}
+  ])
+  .limit(1, 10)
+  .getQuery();
 console.log(queryBuilder);
