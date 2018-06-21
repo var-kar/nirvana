@@ -114,8 +114,8 @@ class NIQueryBuilder {
 
   }
 
-  update() {
-    this._query = 'UPDATE ';
+  update(tableName) {
+    this._query = `UPDATE ${tableName} `;
     return this;
   }
 
