@@ -1,7 +1,7 @@
 {
   "name": "nirvana",
   "version": "0.0.1",
-  "description": " A RESTful API for NodeJS.",
+  "description": " A RESTful API Framework for NodeJS.",
   "main": "index.js",
   "scripts": {
     "test": "grunt test"

@@ -11,6 +11,7 @@ const niOperator = require('./niOperator');
 class NIQueryBuilder {
   constructor() {
     this._query = '';
+    this._isOnConditionEnabled = false;
   }
 
   select(fields) {
@@ -43,12 +44,19 @@ class NIQueryBuilder {
   }
 
   on(condition) {
+    this._isOnConditionEnabled = true; //enable the on condition so the values are treated as fields for condition
     this._query += `ON ${this._condition(condition)}`;
+    this._isOnConditionEnabled = false; //disable the on condition
     return this;
   }
 
   alias(param) {
     this._query += `AS \`${param}\` `;
+    return this;
+  }
+
+  as(param) {
+    this.alias(param);
     return this;
   }
 
@@ -212,9 +220,13 @@ class NIQueryBuilder {
   _checkForFunctions(value, wrapping = '`') {
     if (value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
       return value;
-    } else if (value.indexOf('.') >= 0 && wrapping === '`') {
+    } else if ((value.indexOf('.') >= 0 && wrapping === '`') || (this._isOnConditionEnabled)) {
       let valSplit = value.split('.');
-      return `\`${valSplit[0]}\`.\`${valSplit[1]}\``;
+      if (valSplit.length > 1) {
+        return `\`${valSplit[0]}\`.\`${valSplit[1]}\``;
+      } else {
+        return `\`${valSplit[0]}\``;
+      }
     } else if (niIsOfType(value, NINull)) {
       return 'NULL';
     } else {
@@ -236,14 +248,15 @@ class NIQueryBuilder {
 let queryBuilder = new NIQueryBuilder()
   .select(['M.name', 'M.id', 'M._deleteDate', 'S._deleteDate'])
   .from('Merchant')
-  .alias('M')
+  .as('M')
   .innerJoin('Store')
-  .alias('S')
+  .as('S')
   .on([{'S.__merchantId': {$eq: 'M.id'}}])
   .where([
-    {'S._deleteDate': {$isNot: null}},
-    {'M._deleteDate': {$isNot: null}},
-    {'M.name': {$like: 'GREATEST(\'test\')'}}
+    {'S._deleteDate': {$is: null}},
+    {'M._deleteDate': {$is: null}},
+    {'M.name': {$in: [1,2,3,4,5]}},
+    {'S.city': {$like: '%london%'}}
   ])
   .limit(1, 10)
   .getQuery();
