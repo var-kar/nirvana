@@ -4,14 +4,27 @@
  */
 'use strict';
 
-require('../utils/niType.js');
-require('../utils/niLoop.js');
+require('../utils/niType');
+require('../utils/niLoop');
+require('../utils/niLog');
 const niOperator = require('./niOperator');
+const CHARS_GLOBAL_REGEXP = /[\0\b\t\n\r\x1a\"\'\\]/g; // eslint-disable-line no-control-regex
+const CHARS_ESCAPE_MAP    = {
+  '\0'   : '\\0',
+  '\b'   : '\\b',
+  '\t'   : '\\t',
+  '\n'   : '\\n',
+  '\r'   : '\\r',
+  '\x1a' : '\\Z',
+  '"'    : '\\"',
+  '\''   : '\\\'',
+  '\\'   : '\\\\'
+};
 
 class NIQueryBuilder {
   constructor() {
     this._query = '';
-    this._isOnConditionEnabled = false;
+    this._treatValueAsField = false;
   }
 
   select(fields) {
@@ -44,9 +57,9 @@ class NIQueryBuilder {
   }
 
   on(condition) {
-    this._isOnConditionEnabled = true; //enable the on condition so the values are treated as fields for condition
+    this._treatValueAsField = true; //enable the on condition so the values are treated as fields for condition
     this._query += `ON ${this._condition(condition)}`;
-    this._isOnConditionEnabled = false; //disable the on condition
+    this._treatValueAsField = false; //disable the on condition
     return this;
   }
 
@@ -140,6 +153,10 @@ class NIQueryBuilder {
     return this._query.trim();
   }
 
+  printQuery() {
+    niLog(this.getQuery());
+  }
+
   _condition(_where, operator = 'AND') {
     let queryString = '';
 
@@ -172,7 +189,7 @@ class NIQueryBuilder {
       case 'BETWEEN':
       case 'NOT BETWEEN':
         if (niIsOfType(value, NIArray)) {
-          value = `'${value[0]}' AND '${value[1]}'`;
+          value = `${this._escapeString(value[0])} AND ${this._escapeString(value[1])}`;
         } else {
           throw new TypeError('Expects an array for BETWEEN and NOT BETWEEN conditions');
         }
@@ -194,7 +211,7 @@ class NIQueryBuilder {
         }
         break;
       default: // null should not be checked here so all nulls will be wrapped as string
-        value = this._checkForFunctions(value, '\'');
+        value = this._escapeString(this._checkForFunctions(value, ''));
         break;
     }
     return value;
@@ -220,7 +237,7 @@ class NIQueryBuilder {
   _checkForFunctions(value, wrapping = '`') {
     if (value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
       return value;
-    } else if ((value.indexOf('.') >= 0 && wrapping === '`') || (this._isOnConditionEnabled)) {
+    } else if ((value.indexOf('.') >= 0 && wrapping === '`') || (this._treatValueAsField)) {
       let valSplit = value.split('.');
       if (valSplit.length > 1) {
         return `\`${valSplit[0]}\`.\`${valSplit[1]}\``;
@@ -243,21 +260,48 @@ class NIQueryBuilder {
     }
     return query;
   }
+
+  //The below code is Copyright (c) 2012 Felix Geisendörfer (felix@debuggable.com) and contributors
+  _escapeString(val) {
+    if (!this._treatValueAsField) {
+      let chunkIndex = CHARS_GLOBAL_REGEXP.lastIndex = 0;
+      let escapedVal = '';
+      let match;
+
+      while ((match = CHARS_GLOBAL_REGEXP.exec(val))) {
+        escapedVal += val.slice(chunkIndex, match.index) + CHARS_ESCAPE_MAP[match[0]];
+        chunkIndex = CHARS_GLOBAL_REGEXP.lastIndex;
+      }
+
+      if (chunkIndex === 0) {
+        // Nothing was escaped
+        return "'" + val + "'";
+      }
+
+      if (chunkIndex < val.length) {
+        return "'" + escapedVal + val.slice(chunkIndex) + "'";
+      }
+
+      return "'" + escapedVal + "'";
+    } else {
+      return val;
+    }
+  }
 }
 
-let queryBuilder = new NIQueryBuilder()
+new NIQueryBuilder()
   .select(['M.name', 'M.id', 'M._deleteDate', 'S._deleteDate'])
   .from('Merchant')
   .as('M')
   .innerJoin('Store')
   .as('S')
-  .on([{'S.__merchantId': {$eq: 'M.id'}}])
+  .on([{'S.__merchantId': {$eq: 'M.id'}}, {'S.id': {$eq: 'M.id'}}])
   .where([
     {'S._deleteDate': {$is: null}},
     {'M._deleteDate': {$is: null}},
     {'M.name': {$in: [1,2,3,4,5]}},
-    {'S.city': {$like: '%london%'}}
+    {'S.city': {$like: '%london%'}},
+    {'S.timestamp': {$between: ['2018-01-01 00:00:00', '2018-07-01 00:00:00']}}
   ])
   .limit(1, 10)
-  .getQuery();
-console.log(queryBuilder);
+  .printQuery();
