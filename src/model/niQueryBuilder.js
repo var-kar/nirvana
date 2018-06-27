@@ -8,7 +8,7 @@ require('../utils/niType');
 require('../utils/niLoop');
 require('../utils/niLog');
 const niOperator = require('./niOperator');
-const CHARS_GLOBAL_REGEXP = /[\0\b\t\n\r\x1a\"\'\\]/g; // eslint-disable-line no-control-regex
+const CHARS_GLOBAL_REGEXP = /[\0\b\t\n\r\x1a"'\\]/g; // eslint-disable-line no-control-regex
 const CHARS_ESCAPE_MAP    = {
   '\0'   : '\\0',
   '\b'   : '\\b',
@@ -275,20 +275,20 @@ class NIQueryBuilder {
 
       if (chunkIndex === 0) {
         // Nothing was escaped
-        return "'" + val + "'";
+        return '\'' + val + '\'';
       }
 
       if (chunkIndex < val.length) {
-        return "'" + escapedVal + val.slice(chunkIndex) + "'";
+        return '\'' + escapedVal + val.slice(chunkIndex) + '\'';
       }
 
-      return "'" + escapedVal + "'";
+      return '\'' + escapedVal + '\'';
     } else {
       return val;
     }
   }
 }
-
+let start = +new Date();
 new NIQueryBuilder()
   .select(['M.name', 'M.id', 'M._deleteDate', 'S._deleteDate'])
   .from('Merchant')
@@ -305,3 +305,5 @@ new NIQueryBuilder()
   ])
   .limit(1, 10)
   .printQuery();
+let end = +new Date();
+console.log(end - start);
