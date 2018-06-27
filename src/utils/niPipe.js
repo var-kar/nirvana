@@ -24,7 +24,7 @@ var niPipe = function() {
  * @param cb
  */
 global.niPipe = function() {
-  niWhen.call(...arguments);
+  niWhen.call([...arguments]);
   return;
 };
 
