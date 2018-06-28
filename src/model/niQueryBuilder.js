@@ -28,7 +28,7 @@ class NIQueryBuilder {
   }
 
   select(fields) {
-    if (niIsOfType(fields, NIArray)) {
+    if (niIsOfType(fields, NIArray) && fields.length > 0) {
       this._query = `SELECT ${this._formatField(fields)} `;
     } else {
       this._query = 'SELECT * ';
