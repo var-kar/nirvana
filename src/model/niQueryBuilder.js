@@ -127,7 +127,7 @@ class NIQueryBuilder {
   }
 
   into(tableName) {
-    this._query += `INTO ${tableName} `;
+    this._query += this._tableDeclaration('INTO', tableName);
     return this;
   }
 
@@ -153,12 +153,12 @@ class NIQueryBuilder {
           });
           values.push(vals.substring(0, vals.length - 2));
         } else {
-          throw new TypeError('Expecting an hash map.');
+          throw new TypeError('Expecting a hash map.');
         }
       });
       fields = fields.substring(0, fields.length - 2);
       onDuplicates = onDuplicates.substring(0, onDuplicates.length - 2);
-      this._query += `(${fields}) VALUE (${values.join('),(')}) ON DUPLICATE KEY UPDATE ${onDuplicates}`;
+      this._query += `(${fields}) VALUES (${values.join('), (')}) ON DUPLICATE KEY UPDATE ${onDuplicates}`;
     } else {
       throw new TypeError('Expecting an array.');
     }
@@ -166,7 +166,22 @@ class NIQueryBuilder {
   }
 
   update(tableName) {
-    this._query = `UPDATE ${tableName} `;
+    this._query = this._tableDeclaration('UPDATE', tableName);
+    return this;
+  }
+
+  set(obj) {
+    if (niIsOfType(obj, NIHashMap)) {
+      let updateStr = '';
+      obj.niLoop((value, field) => {
+        updateStr += `${this._formatField(field)} = ${this._escapeString(this._checkForFunctions(value, ''))}, `;
+      });
+      updateStr = updateStr.substring(0, updateStr.length - 2);
+      this._query += `SET ${updateStr} `;
+    } else {
+      throw new TypeError('Expecting a hash map.');
+    }
+
     return this;
   }
 
@@ -318,6 +333,7 @@ class NIQueryBuilder {
     }
   }
 }
+/*
 let start = +new Date();
 new NIQueryBuilder()
   .select(['M.name', 'M.id', 'M._deleteDate', 'S._deleteDate'])
@@ -362,5 +378,25 @@ new NIQueryBuilder()
   .values(test)
   .printQuery();
 
+var test1 = {
+  'field1': 'test1',
+  'field2': 'test2',
+  'field3': 'test3',
+  'field4': 'test4',
+  'field5': null
+};
+new NIQueryBuilder()
+  .update('Merchant')
+  .set(test1)
+  .where([
+    {'S._deleteDate': {$is: null}},
+    {'M._deleteDate': {$is: null}},
+    {'M.name': {$in: [1,2,3,4,5]}},
+    {'S.city': {$like: '%london%'}},
+    {'S.timestamp': {$between: ['2018-01-01 00:00:00', '2018-07-01 00:00:00']}}
+  ])
+  .printQuery();
+
 let end = +new Date();
-console.log(end - start);
+console.log("Performance in ms: " + (end - start));
+*/
