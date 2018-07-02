@@ -131,8 +131,28 @@ class NIQueryBuilder {
     return this;
   }
 
-  values(obj) {
-
+  // Insert allows multi rows.
+  // Values obj must have same set of keys, if not it will throw mysql error
+  values(arrOfObjs) {
+    if (niIsOfType(arrOfObjs, NIArray)) {
+      let values = [];
+      arrOfObjs.niLoop((items) => {
+        if (niIsOfType(items, NIHashMap)) {
+          let fields = '';
+          let onDuplicates = '';
+          let vals = '';
+          items.niLoop((value, field) => {
+            fields += `${this._formatField(field)}, `;
+            vals += `${this._escapeString(this._checkForFunctions(value, ''))}, `;
+            onDuplicates += `${this._formatField(field)} = VALUES(${this.})`;
+          });
+        } else {
+          throw new TypeError('Expecting an hash map.');
+        }
+      });
+    } else {
+      throw new TypeError('Expecting an array.');
+    }
   }
 
   update(tableName) {
@@ -220,7 +240,7 @@ class NIQueryBuilder {
   _formatField(field) {
     let fieldStr = '', _this = this;
     if (niIsOfType(field, NIArray)) {
-      field.niLoop(function(item) {
+      field.niLoop((item) => {
         if (niIsOfType(item, NIString)) {
           fieldStr += `${_this._checkForFunctions(item)}, `;
         }
