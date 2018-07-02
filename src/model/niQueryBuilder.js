@@ -133,26 +133,36 @@ class NIQueryBuilder {
 
   // Insert allows multi rows.
   // Values obj must have same set of keys, if not it will throw mysql error
+  // now O(n^2)
   values(arrOfObjs) {
     if (niIsOfType(arrOfObjs, NIArray)) {
       let values = [];
+      let fields = '';
+      let onDuplicates = '';
+      let vals = '';
       arrOfObjs.niLoop((items) => {
         if (niIsOfType(items, NIHashMap)) {
-          let fields = '';
-          let onDuplicates = '';
-          let vals = '';
+          fields = '';
+          onDuplicates = '';
+          vals = '';
           items.niLoop((value, field) => {
-            fields += `${this._formatField(field)}, `;
+            let formattedField = this._formatField(field);
+            fields += `${formattedField}, `;
             vals += `${this._escapeString(this._checkForFunctions(value, ''))}, `;
-            onDuplicates += `${this._formatField(field)} = VALUES(${this.})`;
+            onDuplicates += `${formattedField} = VALUES(${formattedField}), `;
           });
+          values.push(vals.substring(0, vals.length - 2));
         } else {
           throw new TypeError('Expecting an hash map.');
         }
       });
+      fields = fields.substring(0, fields.length - 2);
+      onDuplicates = onDuplicates.substring(0, onDuplicates.length - 2);
+      this._query += `(${fields}) VALUE (${values.join('),(')}) ON DUPLICATE KEY UPDATE ${onDuplicates}`;
     } else {
       throw new TypeError('Expecting an array.');
     }
+    return this;
   }
 
   update(tableName) {
@@ -255,9 +265,9 @@ class NIQueryBuilder {
   }
 
   _checkForFunctions(value, wrapping = '`') {
-    if (value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
+    if (value && value.indexOf('(') >= 0 && value.indexOf(')') >= 0) {
       return value;
-    } else if ((value.indexOf('.') >= 0 && wrapping === '`') || (this._treatValueAsField)) {
+    } else if (value && ((value.indexOf('.') >= 0 && wrapping === '`') || (this._treatValueAsField))) {
       let valSplit = value.split('.');
       if (valSplit.length > 1) {
         return `\`${valSplit[0]}\`.\`${valSplit[1]}\``;
@@ -283,7 +293,7 @@ class NIQueryBuilder {
 
   //The below code is Copyright (c) 2012 Felix Geisendörfer (felix@debuggable.com) and contributors
   _escapeString(val) {
-    if (!this._treatValueAsField) {
+    if (!this._treatValueAsField && val !== 'NULL') {
       let chunkIndex = CHARS_GLOBAL_REGEXP.lastIndex = 0;
       let escapedVal = '';
       let match;
@@ -325,5 +335,32 @@ new NIQueryBuilder()
   ])
   .limit(1, 10)
   .printQuery();
+
+var test = [{
+  'field1': 'test1',
+  'field2': 'test2',
+  'field3': 'test3',
+  'field4': 'test4',
+  'field5': 'test5'
+},{
+  'field1': 'test1',
+  'field2': 'test2',
+  'field3': 'test3',
+  'field4': 'test4',
+  'field5': 'test5'
+},{
+  'field1': 'test1',
+  'field2': 'test2',
+  'field3': 'test3',
+  'field4': 'test4',
+  'field5': null
+}];
+
+new NIQueryBuilder()
+  .insert()
+  .into('Merchant')
+  .values(test)
+  .printQuery();
+
 let end = +new Date();
 console.log(end - start);
