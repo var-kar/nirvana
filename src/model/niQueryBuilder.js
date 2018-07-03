@@ -1,5 +1,5 @@
 /**
- * Created by karthikvasudevan on 15/08/2017.
+ * Created by karthik vasudevan on 15/08/2017.
  * License: MIT
  */
 'use strict';
