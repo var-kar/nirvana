@@ -61,6 +61,12 @@ class NIQueryBuilder {
     return this;
   }
 
+  /**
+   * [NIQueryBuilder] innerJoin
+   *
+   * @param param
+   * @returns {NIQueryBuilder}
+   */
   innerJoin(param) {
     this._query += this._tableDeclaration('INNER JOIN', param);
     return this;
