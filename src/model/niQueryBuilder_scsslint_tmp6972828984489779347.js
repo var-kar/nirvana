@@ -1,9 +1,9 @@
 /**
- * Created by karthikvasudevan on 15/08/2017.
+ * Created by karthik vasudevan on 15/08/2017.
  * License: MIT
  */
 'use strict';
-//remove these global requires when index is available
+
 require('../utils/niType');
 require('../utils/niLoop');
 require('../utils/niLog');
@@ -23,12 +23,11 @@ const CHARS_ESCAPE_MAP    = {
 
 /**
  * NIQueryBuilder
- * Purpose: Convert SQL query strings as programmable javascript syntax. Fixing all SQL string short comings like SQL sting injection.
+ * Purpose: Convert SQL query str
  */
 class NIQueryBuilder {
   /**
    * NIQueryBuilder
-   * Declare all instance variable
    */
   constructor() {
     this._query = '';
@@ -36,8 +35,8 @@ class NIQueryBuilder {
   }
 
   /**
-   * [NIQueryBuilder] select
-   * Build SELECT statement
+   * [NIQueryBuilder] constructor
+   *
    * @param fields
    * @returns {NIQueryBuilder}
    */
@@ -50,12 +49,6 @@ class NIQueryBuilder {
     return this;
   }
 
-  /**
-   * [NIQueryBuilder] from
-   * Check for a string or NIQueryBuilder instance to check is its a table or a nested query
-   * @param param
-   * @returns {NIQueryBuilder}
-   */
   from(param) {
     this._query += this._tableDeclaration('FROM', param);
     return this;
