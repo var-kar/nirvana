@@ -7,6 +7,7 @@
 require('../utils/niType');
 require('../utils/niLoop');
 require('../utils/niLog');
+require('../utils/niTrim');
 const niOperator = require('./niOperator');
 const CHARS_GLOBAL_REGEXP = /[\0\b\t\n\r\x1a"'\\]/g; // eslint-disable-line no-control-regex
 const CHARS_ESCAPE_MAP    = {
@@ -38,11 +39,11 @@ class NIQueryBuilder {
   /**
    * [NIQueryBuilder] select
    * Build SELECT statement
-   * @param fields
+   * @param fields {NIArray, falsey}
    * @returns {NIQueryBuilder}
    */
   select(fields) {
-    if (niIsOfType(fields, NIArray) && fields.length > 0) {
+    if (niIsOfType(fields, NIArray) && fields.niTrim().length > 0) {
       this._query = `SELECT ${this._formatField(fields)} `;
     } else {
       this._query = 'SELECT * ';
@@ -53,7 +54,7 @@ class NIQueryBuilder {
   /**
    * [NIQueryBuilder] from
    * Check for a string or NIQueryBuilder instance to check is its a table or a nested query
-   * @param param
+   * @param param {NIQueryBuilder, NIString, Falsey}
    * @returns {NIQueryBuilder}
    */
   from(param) {
@@ -63,8 +64,8 @@ class NIQueryBuilder {
 
   /**
    * [NIQueryBuilder] innerJoin
-   *
-   * @param param
+   * Same as from method. Check for nested query or just a table name
+   * @param param {NIQueryBuilder, NIString, Falsey}
    * @returns {NIQueryBuilder}
    */
   innerJoin(param) {
@@ -359,6 +360,8 @@ class NIQueryBuilder {
     }
   }
 }
+
+module.exports = NIQueryBuilder;
 /*
 let start = +new Date();
 new NIQueryBuilder()

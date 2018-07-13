@@ -4,11 +4,12 @@ require('./niType');
 
 /**
  * [niTrim]
- * utils function to trim white spaces and falsey objects
+ * utils function to trim white spaces if string and falsey objects in case of array
  * @param cb
  * @return function //uses callback to return when function invoked
  */
 var niTrim = function(cb) {
+  console.log(this);
   if (niIsOfType(this, NIString)) {
     return this.trim();
   } else if (niIsOfType(this, NIArray)) {

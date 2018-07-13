@@ -1,12 +1,10 @@
 'use strict';
 
 module.exports = {
-  '*': [
+  'SELECT *': [
     [],
     new Array(),
-    [1,2,3,4,5],
     [undefined, false, 0, null, NaN],
-    ['hello', 'world'],
     null,
     undefined,
     {},
